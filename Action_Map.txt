@@ -1,0 +1,50 @@
+Action map
+
+Acount
+- register
+- login / logout
+- view profile
+- edit profile
+- change password
+- delete user
+- subscribe / unsubscribe
+- get my comments
+- edit comment
+- delete comment
+- get my liked products
+- get my orders
+
+Orders
+- create order from cart
+- add product to cart
+- remove product from cart
+- get all products from cart
+
+Categories
+- get sub categories for a category
+- get all categories
+- get all brands 
+
+Attributes
+- remove attribute (admin)
+- add attribute (admin)
+
+Products
+- add product (admin)
+- delete product (admin)
+- add attribute to the product (admin)
+- remove attribute from the product (admin)
+- get product by id
+- look for products by description
+- get all products
+- get all products with filters
+- get all by sub category
+- get all by brand
+- get cooments for product
+- like product
+- dislike product
+
+Offers
+- add offer (admin)
+- edit offer (admin)
+- get all products in offers
