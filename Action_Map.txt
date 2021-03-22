@@ -3,19 +3,19 @@ Action map
 Acount
 - register
 - login / logout
-- view profile
-- edit profile
-- change password
+- get by id
+- edit by id
 - delete user
 - subscribe / unsubscribe
-- get my comments
-- edit comment
-- delete comment
-- get my liked products
-- get my orders
+
+Comments
+- get user comments by id
+- edit comment by id
+- delete comment by id
+- get cooments for product by id
 
 Orders
-- create order from cart
+- get by id
 - add product to cart
 - remove product from cart
 - get all products from cart
@@ -35,16 +35,13 @@ Products
 - add attribute to the product (admin)
 - remove attribute from the product (admin)
 - get product by id
-- look for products by description
 - get all products
 - get all products with filters
-- get all by sub category
-- get all by brand
-- get cooments for product
 - like product
 - dislike product
+- get my liked products
 
-Offers
-- add offer (admin)
-- edit offer (admin)
-- get all products in offers
+Discounts
+- add discount(admin)
+- edit discount (admin)
+- get all products in discount
