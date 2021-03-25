@@ -3,6 +3,7 @@ package technomarket.model.pojo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import technomarket.model.dto.RegisterRequestUserDTO;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -23,5 +24,14 @@ public class User {
     private String phone;
     private boolean isSubscribed;
     private boolean isAdmin;
+
+    public User(RegisterRequestUserDTO userDTO){
+        name = userDTO.getFirstName();
+        lastName = userDTO.getLastName();
+        email = userDTO.getEmail();
+        password = userDTO.getPassword();
+        isAdmin = userDTO.isSubscribed();
+        //todo... is admin
+    }
 
 }
