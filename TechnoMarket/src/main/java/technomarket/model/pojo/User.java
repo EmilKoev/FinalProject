@@ -5,16 +5,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import technomarket.model.dto.RegisterRequestUserDTO;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @NoArgsConstructor
 @Setter
 @Getter
-@Table(name = "users")
+@Entity
+@Table(name="users")
 public class User {
 
-    @Id //?
+    @Id
     private int id;
     private String name;
     private String lastName;
@@ -22,8 +24,8 @@ public class User {
     private String password;
     private String address;
     private String phone;
-    private boolean isSubscribed;
     private boolean isAdmin;
+    private boolean isSubscribed;
 
     public User(RegisterRequestUserDTO userDTO){
         name = userDTO.getFirstName();
