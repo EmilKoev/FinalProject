@@ -1,5 +1,6 @@
 package technomarket.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -10,6 +11,9 @@ import technomarket.model.dto.ErrorDTO;
 
 @org.springframework.stereotype.Controller
 public abstract class Controller {
+
+    @Autowired
+    protected SessionManager sessionManager;
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

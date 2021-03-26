@@ -18,22 +18,22 @@ public class User {
 
     @Id
     private int id;
-    private String name;
+    private String firstName;
     private String lastName;
     private String email;
     private String password;
     private String address;
     private String phone;
-    private boolean isAdmin;
     private boolean isSubscribed;
+    private boolean isAdmin;
 
     public User(RegisterRequestUserDTO userDTO){
-        name = userDTO.getFirstName();
+        firstName = userDTO.getFirstName();
         lastName = userDTO.getLastName();
         email = userDTO.getEmail();
         password = userDTO.getPassword();
-        isAdmin = userDTO.isSubscribed();
-        //todo... is admin
+        isSubscribed = userDTO.isSubscribed();
+        phone = userDTO.getPhone();
+        address = userDTO.getAddress();
     }
-
 }

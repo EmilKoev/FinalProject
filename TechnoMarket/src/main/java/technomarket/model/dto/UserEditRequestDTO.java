@@ -5,19 +5,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @Component
-public class RegisterRequestUserDTO {
+public class UserEditRequestDTO {
 
     private String firstName;
     private String lastName;
-    private String password;
-    private String confirmPassword;
     private String email;
-    private String phone;
+    private String oldPassword;
+    private String newPassword;
     private String address;
+    private String phone;
     private boolean isSubscribed = true;
 
 }

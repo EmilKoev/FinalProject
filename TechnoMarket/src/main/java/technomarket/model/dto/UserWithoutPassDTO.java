@@ -23,7 +23,7 @@ public class UserWithoutPassDTO {
 
     public UserWithoutPassDTO(User user){
         id = user.getId();
-        name = user.getName();
+        name = user.getFirstName();
         lastName = user.getLastName();
         email = user.getEmail();
         address = user.getAddress();
