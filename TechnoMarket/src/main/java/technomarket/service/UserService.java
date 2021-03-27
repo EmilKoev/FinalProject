@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import technomarket.controller.SessionManager;
 import technomarket.exeptions.AuthenticationException;
 import technomarket.exeptions.BadRequestException;
 import technomarket.model.dto.*;
@@ -28,8 +27,7 @@ public class UserService {
         userDTO.setPassword(encoder.encode(userDTO.getPassword()));
         User user = new User(userDTO);
         user = userRepository.save(user);
-        UserWithoutPassDTO responseUserDTO = new UserWithoutPassDTO(user);
-        return responseUserDTO;
+        return new UserWithoutPassDTO(user);
     }
 
     public UserWithoutPassDTO login(LoginDTO loginDTO) {
@@ -60,8 +58,10 @@ public class UserService {
             }
             user.setFirstName(requestDto.getFirstName());
             user.setLastName(requestDto.getLastName());
-            if (userRepository.findByEmail(requestDto.getEmail()) != null) {
-                throw new BadRequestException("Email already exists");
+            if(!requestDto.getEmail().equals(user.getEmail())){
+                if (userRepository.findByEmail(requestDto.getEmail()) != null) {
+                    throw new BadRequestException("Email already exists");
+                }
             }
             user.setEmail(requestDto.getEmail());
             user.setAddress(requestDto.getAddress());
