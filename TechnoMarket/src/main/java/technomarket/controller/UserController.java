@@ -30,7 +30,7 @@ public class UserController extends Controller {
         sessionManager.logoutUser(session);
     }
 
-    @PostMapping("/user/edit")
+    @PutMapping("/user/edit")
     public UserWithoutPassDTO edit(@RequestBody UserEditRequestDTO requestDto, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         return userService.edit(requestDto,user);

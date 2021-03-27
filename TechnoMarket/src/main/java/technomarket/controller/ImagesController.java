@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import technomarket.model.pojo.Product;
 import technomarket.model.pojo.ProductImage;
 import technomarket.service.ProductImageService;
 import technomarket.service.ProductService;
@@ -13,7 +12,7 @@ import java.io.*;
 import java.nio.file.Files;
 
 @RestController
-public class ImagesController {
+public class ImagesController extends Controller {
 
     @Autowired
     ProductService productService;
@@ -44,5 +43,4 @@ public class ImagesController {
         File file = new File(url);
         return Files.readAllBytes(file.toPath());
     }
-
 }

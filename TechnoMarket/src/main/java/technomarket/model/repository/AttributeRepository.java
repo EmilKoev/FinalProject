@@ -5,7 +5,5 @@ import org.springframework.stereotype.Repository;
 import technomarket.model.pojo.ProductAttribute;
 
 @Repository
-public interface AttributeRepository extends JpaRepository<ProductAttribute, Integer> {
-
-
+public interface AttributeRepository extends JpaRepository<ProductAttribute, String> {
 }

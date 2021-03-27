@@ -9,7 +9,6 @@ import technomarket.model.pojo.User;
 import technomarket.service.ProductService;
 
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 @RestController
 public class ProductsController extends Controller{
