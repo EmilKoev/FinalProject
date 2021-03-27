@@ -1,21 +1,14 @@
 package technomarket.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import technomarket.exeptions.BadRequestException;
 import technomarket.exeptions.NotFoundException;
 import technomarket.model.dto.AddProductDTO;
 import technomarket.model.dto.AttributeDTO;
-import technomarket.model.dto.RegisterRequestUserDTO;
-import technomarket.model.dto.UserWithoutPassDTO;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.ProductAttribute;
-import technomarket.model.pojo.User;
 import technomarket.model.repository.ProductRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,6 +18,10 @@ public class ProductService {
     private ProductRepository productRepository;
     @Autowired
     private AttributeService attributeService;
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private SubCategoryService subCategoryService;
 
 
     public Product getById(int id) {
@@ -37,13 +34,14 @@ public class ProductService {
     }
 
     public Product addProduct(AddProductDTO productDTO) {
+        //TODO validation (sub category/category)
         Product product = new Product(productDTO);
-        List<AttributeDTO> attributes = productDTO.getAttributeList();
-        for (AttributeDTO attributeDTO : attributes) {
-            ProductAttribute attribute = new ProductAttribute(attributeDTO, product.getId());
+        productRepository.save(product);
+        for (AttributeDTO attributeDTO : productDTO.getAttributeList()) {
+            ProductAttribute attribute = new ProductAttribute(attributeDTO, product);
             attributeService.addAttribute(attribute);
         }
-        return productRepository.save(product);
+        return product;
     }
 }
 

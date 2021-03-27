@@ -12,7 +12,7 @@ import java.io.*;
 import java.nio.file.Files;
 
 @RestController
-public class ImagesController extends Controller {
+public class ImagesController extends Controller{
 
     @Autowired
     ProductService productService;
@@ -43,4 +43,5 @@ public class ImagesController extends Controller {
         File file = new File(url);
         return Files.readAllBytes(file.toPath());
     }
+
 }

@@ -28,6 +28,9 @@ public class Product {
     @OneToMany(mappedBy = "product")
     @JsonManagedReference
     private List<ProductImage> images;
+    @OneToMany
+    @JsonManagedReference
+    private List<ProductAttribute> attributes;
 
     public Product(AddProductDTO productDTO){
         this.brand = productDTO.getBrand();

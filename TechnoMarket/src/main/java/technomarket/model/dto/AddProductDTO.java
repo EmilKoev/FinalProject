@@ -1,11 +1,10 @@
 package technomarket.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.bytebuddy.agent.builder.AgentBuilder;
 import org.springframework.stereotype.Component;
-import technomarket.model.pojo.ProductAttribute;
 
 import java.util.List;
 
@@ -16,10 +15,12 @@ import java.util.List;
 public class AddProductDTO {
 
     private String brand;
+    @JsonProperty("sub_category_id")
     private int subCategoryId;
     private double price;
     private String info;
     private int discountId;
+    @JsonProperty("attribute_list")
     private List<AttributeDTO> attributeList;
 
 }
