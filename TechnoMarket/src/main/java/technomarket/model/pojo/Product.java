@@ -1,25 +1,40 @@
 package technomarket.model.pojo;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import technomarket.model.dto.AddProductDTO;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @Setter
 @Getter
+@Entity
 @Table(name = "products")
 public class Product {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String brand;
     private int subCategoryId;
     private double price;
     private String info;
     private int discountId;
-    
+    @OneToMany(mappedBy = "product")
+    @JsonManagedReference
+    private List<ProductImage> images;
+
+    public Product(AddProductDTO productDTO){
+        this.brand = productDTO.getBrand();
+        this.subCategoryId = productDTO.getSubCategoryId();
+        this.price = productDTO.getPrice();
+        this.info = productDTO.getInfo();
+        this.discountId = productDTO.getDiscountId();
+    }
 
 }
