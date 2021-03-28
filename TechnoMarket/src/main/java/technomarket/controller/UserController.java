@@ -3,15 +3,20 @@ package technomarket.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.model.dto.*;
+import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
+import technomarket.service.ProductService;
 import technomarket.service.UserService;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 public class UserController extends Controller {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private ProductService productService;
 
     @PutMapping("/user/register")
     public UserWithoutPassDTO register(@RequestBody RegisterRequestUserDTO userDTO){
@@ -40,5 +45,12 @@ public class UserController extends Controller {
     public void delete(@RequestBody PasswordDTO password , HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         userService.delete(password ,user);
+    }
+
+    @PutMapping("/cart/{id}")
+    public List<Product> addProductToCart(@PathVariable(name = "id") int id, HttpSession session){
+        User user = sessionManager.getLoggedUser(session);
+        Product product = productService.getById(id);
+        return userService.addProductToCart(user, product);
     }
 }

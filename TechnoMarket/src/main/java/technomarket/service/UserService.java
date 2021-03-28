@@ -1,5 +1,6 @@
 package technomarket.service;
 
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -7,14 +8,21 @@ import org.springframework.stereotype.Service;
 import technomarket.exeptions.AuthenticationException;
 import technomarket.exeptions.BadRequestException;
 import technomarket.model.dto.*;
+import technomarket.model.pojo.Order;
+import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
+import technomarket.model.repository.OrderRepository;
 import technomarket.model.repository.UserRepository;
+
+import java.util.List;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     public UserWithoutPassDTO addUser(RegisterRequestUserDTO userDTO){
         if(userRepository.findByEmail(userDTO.getEmail()) != null){
@@ -26,6 +34,9 @@ public class UserService {
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         userDTO.setPassword(encoder.encode(userDTO.getPassword()));
         User user = new User(userDTO);
+        user = userRepository.save(user);
+        Order order = new Order(user);
+        user.setOrder(order);
         user = userRepository.save(user);
         return new UserWithoutPassDTO(user);
     }
@@ -80,5 +91,11 @@ public class UserService {
         }else {
             throw new BadRequestException("Wrong password!");
         }
+    }
+
+    public List<Product> addProductToCart(User user, Product product) {
+        user.getOrder().getProducts().add(product);
+        orderRepository.save(user.getOrder());
+        return orderRepository.getByUserId(user.getId()).getProducts();
     }
 }

@@ -6,6 +6,7 @@ import lombok.Setter;
 import technomarket.model.dto.RegisterRequestUserDTO;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @Setter
@@ -21,18 +22,26 @@ public class User {
     private String lastName;
     private String email;
     private String password;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    private Order order;
     private String address;
     private String phone;
     private boolean isSubscribed;
     private boolean isAdmin;
+    @ManyToMany(mappedBy = "likers")
+    private List<Comment> likedComments;
+    @ManyToMany(mappedBy = "dislikers")
+    List<Comment> dislikedComments;
+
 
     public User(RegisterRequestUserDTO userDTO){
-        firstName = userDTO.getFirstName();
-        lastName = userDTO.getLastName();
-        email = userDTO.getEmail();
-        password = userDTO.getPassword();
-        isSubscribed = userDTO.isSubscribed();
-        phone = userDTO.getPhone();
-        address = userDTO.getAddress();
+        this.firstName = userDTO.getFirstName();
+        this.lastName = userDTO.getLastName();
+        this.email = userDTO.getEmail();
+        this.password = userDTO.getPassword();
+        this.isSubscribed = userDTO.isSubscribed();
+        this.phone = userDTO.getPhone();
+        this.address = userDTO.getAddress();
     }
 }

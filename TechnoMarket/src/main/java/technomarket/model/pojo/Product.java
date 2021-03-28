@@ -1,6 +1,7 @@
 package technomarket.model.pojo;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,9 @@ public class Product {
     @OneToMany
     @JsonManagedReference
     private List<ProductAttribute> attributes;
+    @JsonBackReference
+    @ManyToMany(mappedBy = "products")
+    private List<Order> orders;
 
     public Product(AddProductDTO productDTO){
         this.brand = productDTO.getBrand();
@@ -38,6 +42,7 @@ public class Product {
         this.price = productDTO.getPrice();
         this.info = productDTO.getInfo();
         this.discountId = productDTO.getDiscountId();
+
     }
 
 }
