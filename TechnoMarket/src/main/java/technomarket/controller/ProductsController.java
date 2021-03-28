@@ -30,4 +30,14 @@ public class ProductsController extends Controller{
         return productService.addProduct(productDTO);
     }
 
+    @DeleteMapping("/products/{id}")
+    public String deleteProduct(@PathVariable int id, HttpSession session){
+        User user = sessionManager.getLoggedUser(session);
+        if (!user.isAdmin()){
+            throw  new AuthenticationException("Only admins can do this!");
+        }
+        productService.delete(id);
+        return "Delete successful";
+    }
+
 }

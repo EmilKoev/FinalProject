@@ -19,6 +19,7 @@ public class AddProductDTO {
     private int subCategoryId;
     private double price;
     private String info;
+    @JsonProperty("discount_id")
     private int discountId;
     @JsonProperty("attribute_list")
     private List<AttributeDTO> attributeList;

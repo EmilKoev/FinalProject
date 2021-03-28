@@ -9,6 +9,7 @@ import lombok.Setter;
 import technomarket.model.dto.AddProductDTO;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -42,6 +43,7 @@ public class Product {
         this.price = productDTO.getPrice();
         this.info = productDTO.getInfo();
         this.discountId = productDTO.getDiscountId();
+        this.attributes = new ArrayList<>();
 
     }
 

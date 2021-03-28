@@ -19,7 +19,7 @@ public class ProductService {
     @Autowired
     private AttributeService attributeService;
     @Autowired
-    private CategoryService categoryService;
+    private DiscountService discountService;
     @Autowired
     private SubCategoryService subCategoryService;
 
@@ -34,14 +34,24 @@ public class ProductService {
     }
 
     public Product addProduct(AddProductDTO productDTO) {
-        //TODO validation (sub category/category)
+        //TODO transaction
+        subCategoryService.getSubCategory(productDTO.getSubCategoryId());
+        discountService.getDiscount(productDTO.getDiscountId());
         Product product = new Product(productDTO);
         productRepository.save(product);
         for (AttributeDTO attributeDTO : productDTO.getAttributeList()) {
-            ProductAttribute attribute = new ProductAttribute(attributeDTO, product);
-            attributeService.addAttribute(attribute);
+            attributeService.addAttribute(attributeDTO, product.getId());
         }
         return product;
+    }
+
+    void save(Product product) {
+        productRepository.save(product);
+    }
+
+    public void delete(int id) {
+        Product product = getById(id);
+        productRepository.delete(product);
     }
 }
 
