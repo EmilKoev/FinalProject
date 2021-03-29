@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Component
-public class AddProductDTO {
+public class ProductDTO {
 
     private String brand;
     @JsonProperty("sub_category_id")

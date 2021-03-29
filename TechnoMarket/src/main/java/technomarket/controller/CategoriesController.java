@@ -15,7 +15,7 @@ public class CategoriesController extends Controller{
     @Autowired
     private CategoryService service;
 
-    @PutMapping("/category")
+    @PutMapping("/categories")
     public Category createCategory(@RequestBody Category category, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
@@ -24,9 +24,11 @@ public class CategoriesController extends Controller{
         return service.addCategory(category);
     }
 
-    @GetMapping("/category/{id}")
+    @GetMapping("/categories/{id}")
     public Category getCategory(@PathVariable int id){
         return service.getCategory(id);
     }
+
+    //TODO edit and delete methods
 
 }

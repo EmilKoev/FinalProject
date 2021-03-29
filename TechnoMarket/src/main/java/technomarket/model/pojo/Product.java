@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import technomarket.model.dto.AddProductDTO;
+import technomarket.model.dto.ProductDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     private List<Order> orders;
 
-    public Product(AddProductDTO productDTO){
+    public Product(ProductDTO productDTO){
         this.brand = productDTO.getBrand();
         this.subCategoryId = productDTO.getSubCategoryId();
         this.price = productDTO.getPrice();

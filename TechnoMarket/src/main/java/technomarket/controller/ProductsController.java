@@ -3,7 +3,8 @@ package technomarket.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.exeptions.AuthenticationException;
-import technomarket.model.dto.AddProductDTO;
+import technomarket.model.dto.ProductDTO;
+import technomarket.model.dto.EditProductDTO;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
 import technomarket.service.ProductService;
@@ -21,8 +22,8 @@ public class ProductsController extends Controller{
         return productService.getById(id);
     }
 
-    @PutMapping("/add/product")
-    public Product addProduct(@RequestBody AddProductDTO productDTO, HttpSession session){
+    @PutMapping("/add/products")
+    public Product addProduct(@RequestBody ProductDTO productDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
@@ -38,6 +39,15 @@ public class ProductsController extends Controller{
         }
         productService.delete(id);
         return "Delete successful";
+    }
+
+    @PostMapping("/products/{id}")
+    public Product editProduct(@PathVariable int id, @RequestBody EditProductDTO editProductDTO, HttpSession session){
+        User user = sessionManager.getLoggedUser(session);
+        if (!user.isAdmin()){
+            throw  new AuthenticationException("Only admins can do this!");
+        }
+        return productService.edit(id, editProductDTO);
     }
 
 }

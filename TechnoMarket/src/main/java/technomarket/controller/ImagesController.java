@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import technomarket.exeptions.AuthenticationException;
 import technomarket.model.pojo.ProductImage;
+import technomarket.model.pojo.User;
 import technomarket.service.ProductImageService;
 import technomarket.service.ProductService;
 
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.nio.file.Files;
 
@@ -23,9 +26,13 @@ public class ImagesController extends Controller{
     @Value("${file.path}")
     private String filePath;
 
-    @PutMapping("/images/{id}/upload")
-    public ProductImage upload(@PathVariable int id, @RequestPart MultipartFile file) throws IOException {
-        File pFile = new File(filePath + File.separator + System.nanoTime() + ".png");
+    @PutMapping("/products/{id}/images")
+    public ProductImage upload(@PathVariable int id, @RequestPart MultipartFile file, HttpSession session) throws IOException {
+        User user = sessionManager.getLoggedUser(session);
+        if (!user.isAdmin()){
+            throw  new AuthenticationException("Only admins can do this!");
+        }
+        File pFile = new File(filePath + File.separator + id + "_" + System.nanoTime() + ".png");
         OutputStream stream = new FileOutputStream(pFile);
         stream.write(file.getBytes());
         ProductImage productImage = new ProductImage();

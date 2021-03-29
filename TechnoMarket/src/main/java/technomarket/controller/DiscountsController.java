@@ -16,7 +16,7 @@ public class DiscountsController extends Controller{
     @Autowired
     private DiscountService discountService;
 
-    @PutMapping("/discount")
+    @PutMapping("/discounts")
     public Discount addDiscount(@RequestBody Discount discount, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
@@ -25,12 +25,12 @@ public class DiscountsController extends Controller{
         return discountService.addDiscount(discount);
     }
 
-    @GetMapping("/discount/{id}")
+    @GetMapping("/discounts/{id}")
     public Discount getDiscount(@PathVariable int id){
         return discountService.getDiscount(id);
     }
 
-    @PostMapping("/discount/{id}")
+    @PostMapping("/discounts/{id}")
     public Discount editDiscount(@PathVariable int id, @RequestBody Discount discount, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
@@ -39,7 +39,7 @@ public class DiscountsController extends Controller{
         return discountService.edit(discount, id);
     }
 
-    @DeleteMapping("/discount/{id}")
+    @DeleteMapping("/discounts/{id}")
     public String deleteDiscount(@PathVariable int id, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){

@@ -13,12 +13,14 @@ import java.io.Serializable;
 @Setter
 @Getter
 @Entity
+@IdClass(AttributeId.class)
 @Table(name = "attributes")
 public class ProductAttribute implements Serializable {
 
     @Id
     private String name;
     private String value;
+    @Id
     @ManyToOne
     @JoinColumn(name = "product_id")
     @JsonBackReference
