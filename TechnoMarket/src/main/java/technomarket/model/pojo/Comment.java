@@ -1,5 +1,7 @@
 package technomarket.model.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +21,7 @@ public class Comment {
     private int id;
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonBackReference
     private Product productId;
     @ManyToOne
     @JoinColumn(name = "owner_id")

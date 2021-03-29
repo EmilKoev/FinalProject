@@ -13,9 +13,6 @@ import technomarket.model.pojo.User;
 import technomarket.model.repository.OrderRepository;
 import technomarket.model.repository.UserRepository;
 
-import java.util.List;
-import java.util.Set;
-
 @Service
 public class UserService {
 
@@ -59,7 +56,6 @@ public class UserService {
                 return new UserWithoutPassDTO(user);
             }
         }
-
     }
 
     public UserWithoutPassDTO edit(UserEditRequestDTO requestDto, User user) {
@@ -99,24 +95,24 @@ public class UserService {
         }
     }
 
-    public Order addProductToCart(User user, Product product) {
+    public OrderResponseDTO addProductToCart(User user, Product product) {
         user.getOrder().getProducts().add(product);
         user.getOrder().setPrice(user.getOrder().getPrice() + product.getPrice());
         orderRepository.save(user.getOrder());
-        return orderRepository.getByUserId(user.getId());
+        return new OrderResponseDTO(orderRepository.getByUserId(user.getId()));
     }
 
-    public Order removeProductFromCart(User user, Product product) {
+    public OrderResponseDTO removeProductFromCart(User user, Product product) {
         if (!user.getOrder().getProducts().contains(product)){
             throw new BadRequestException("No product like this in cart!");
         }
         user.getOrder().getProducts().remove(product);
         user.getOrder().setPrice(user.getOrder().getPrice() - product.getPrice());
         orderRepository.save(user.getOrder());
-        return orderRepository.getByUserId(user.getId());
+        return new OrderResponseDTO(orderRepository.getByUserId(user.getId()));
     }
 
-    public Order getProductsFromCart(User user) {
-        return orderRepository.getByUserId(user.getId());
+    public OrderResponseDTO getProductsFromCart(User user) {
+        return new OrderResponseDTO(orderRepository.getByUserId(user.getId()));
     }
 }

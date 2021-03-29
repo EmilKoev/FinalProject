@@ -32,7 +32,9 @@ public class UserWithoutPassDTO {
         phone = user.getPhone();
         isSubscribed = user.isSubscribed();
         isAdmin = user.isAdmin();
-        countOfProductsInCart = user.getOrder().getProducts().size();
+        if (user.getOrder().getProducts() != null) {
+            countOfProductsInCart = user.getOrder().getProducts().size();
+        }
         totalPriceOfAllProductsInCart = user.getOrder().getPrice();
     }
 

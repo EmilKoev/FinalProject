@@ -28,6 +28,7 @@ public class Product {
     private String info;
     private int discountId;
     @OneToMany(mappedBy = "productId")
+    @JsonManagedReference
     private List<Comment> comments;
     @OneToMany(mappedBy = "product")
     @JsonManagedReference
@@ -46,7 +47,5 @@ public class Product {
         this.info = productDTO.getInfo();
         this.discountId = productDTO.getDiscountId();
         this.attributes = new ArrayList<>();
-
     }
-
 }

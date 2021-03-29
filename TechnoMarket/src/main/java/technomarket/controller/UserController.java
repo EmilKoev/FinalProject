@@ -64,21 +64,21 @@ public class UserController extends Controller {
     }
 
     @PutMapping("/cart/{id}")
-    public Order addProductToCart(@PathVariable(name = "id") int id, HttpSession session){
+    public OrderResponseDTO addProductToCart(@PathVariable(name = "id") int id, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         Product product = productService.getById(id);
         return userService.addProductToCart(user, product);
     }
 
     @DeleteMapping("/cart/{id}")
-    public Order removeProductFromCart(@PathVariable(name = "id") int id, HttpSession session){
+    public OrderResponseDTO removeProductFromCart(@PathVariable(name = "id") int id, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         Product product = productService.getById(id);
         return userService.removeProductFromCart(user,product);
     }
 
     @PostMapping("/cart")
-    public Order getProductsFromCart(HttpSession session){
+    public OrderResponseDTO getProductsFromCart(HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         return userService.getProductsFromCart(user);
     }
