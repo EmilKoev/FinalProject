@@ -20,6 +20,8 @@ public class UserWithoutPassDTO {
     private String phone;
     private boolean isSubscribed;
     private boolean isAdmin;
+    private int countOfProductsInCart;
+    private double totalPriceOfAllProductsInCart;
 
     public UserWithoutPassDTO(User user){
         id = user.getId();
@@ -30,6 +32,8 @@ public class UserWithoutPassDTO {
         phone = user.getPhone();
         isSubscribed = user.isSubscribed();
         isAdmin = user.isAdmin();
+        countOfProductsInCart = user.getOrder().getProducts().size();
+        totalPriceOfAllProductsInCart = user.getOrder().getPrice();
     }
 
 }

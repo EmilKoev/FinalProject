@@ -20,7 +20,7 @@ public class Order {
     @Id
     private int id;
     @OneToOne(mappedBy = "order")
-
+    @JsonBackReference
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
     private String address;
@@ -33,10 +33,4 @@ public class Order {
             inverseJoinColumns = { @JoinColumn(name = "product_id") }
     )
     List<Product> products;
-
-    public Order(User user){
-        this.user = user;
-        this.address = user.getAddress();
-    }
-
 }

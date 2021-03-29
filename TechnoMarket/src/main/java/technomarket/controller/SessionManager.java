@@ -26,6 +26,13 @@ public class SessionManager {
         }
     }
 
+    public boolean isSomeoneLoggedIn(HttpSession session){
+        if (session.getAttribute(LOGGED_USER_ID) == null){
+            return false;
+        }
+        return true;
+    }
+
     public void loginUser(HttpSession ses, int id) {
         ses.setAttribute(LOGGED_USER_ID, id);
     }

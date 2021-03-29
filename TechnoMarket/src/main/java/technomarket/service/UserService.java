@@ -1,6 +1,5 @@
 package technomarket.service;
 
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +14,7 @@ import technomarket.model.repository.OrderRepository;
 import technomarket.model.repository.UserRepository;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -33,11 +33,17 @@ public class UserService {
         }
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         userDTO.setPassword(encoder.encode(userDTO.getPassword()));
+
         User user = new User(userDTO);
-        user = userRepository.save(user);
-        Order order = new Order(user);
+        Order order = new Order();
+
+        order = orderRepository.save(order);
         user.setOrder(order);
         user = userRepository.save(user);
+        order.setUser(user);
+        order.setAddress(user.getAddress());
+        orderRepository.save(order);
+
         return new UserWithoutPassDTO(user);
     }
 
@@ -93,9 +99,24 @@ public class UserService {
         }
     }
 
-    public List<Product> addProductToCart(User user, Product product) {
+    public Order addProductToCart(User user, Product product) {
         user.getOrder().getProducts().add(product);
+        user.getOrder().setPrice(user.getOrder().getPrice() + product.getPrice());
         orderRepository.save(user.getOrder());
-        return orderRepository.getByUserId(user.getId()).getProducts();
+        return orderRepository.getByUserId(user.getId());
+    }
+
+    public Order removeProductFromCart(User user, Product product) {
+        if (!user.getOrder().getProducts().contains(product)){
+            throw new BadRequestException("No product like this in cart!");
+        }
+        user.getOrder().getProducts().remove(product);
+        user.getOrder().setPrice(user.getOrder().getPrice() - product.getPrice());
+        orderRepository.save(user.getOrder());
+        return orderRepository.getByUserId(user.getId());
+    }
+
+    public Order getProductsFromCart(User user) {
+        return orderRepository.getByUserId(user.getId());
     }
 }
