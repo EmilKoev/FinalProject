@@ -16,7 +16,7 @@ public class SubCategoryController extends Controller{
     @Autowired
     private SubCategoryService service;
 
-    @PutMapping("/sub_category")
+    @PutMapping("/sub_categories")
     public SubCategory createSubCategory(@RequestBody CreateRequestSubCategoryDTO category, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
@@ -25,8 +25,10 @@ public class SubCategoryController extends Controller{
         return service.addSubCategory(category);
     }
 
-    @GetMapping("/sub_category/{id}")
+    @GetMapping("/sub_categories/{id}")
     public SubCategory getSubCategory(@PathVariable int id){
         return service.getSubCategory(id);
     }
+
+    //TODO edit and delete methods
 }
