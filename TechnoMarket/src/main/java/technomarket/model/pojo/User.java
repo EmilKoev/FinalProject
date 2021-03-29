@@ -32,6 +32,8 @@ public class User {
     private String phone;
     private boolean isSubscribed;
     private boolean isAdmin;
+    @OneToMany(mappedBy = "ownerId")
+    List<Comment> comments;
     @ManyToMany(mappedBy = "likers")
     private List<Comment> likedComments;
     @ManyToMany(mappedBy = "dislikers")

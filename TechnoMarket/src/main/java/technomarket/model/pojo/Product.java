@@ -27,6 +27,8 @@ public class Product {
     private double price;
     private String info;
     private int discountId;
+    @OneToMany(mappedBy = "productId")
+    private List<Comment> comments;
     @OneToMany(mappedBy = "product")
     @JsonManagedReference
     private List<ProductImage> images;

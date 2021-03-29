@@ -3,10 +3,12 @@ package technomarket.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import technomarket.exeptions.AuthenticationException;
+import technomarket.exeptions.BadRequestException;
 import technomarket.exeptions.NotFoundException;
 import technomarket.model.dto.CommentReactDTO;
 import technomarket.model.dto.CommentResponseDTO;
 import technomarket.model.pojo.Comment;
+import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
 import technomarket.model.repository.CommentsRepository;
 import technomarket.model.repository.UserRepository;
@@ -23,28 +25,28 @@ public class CommentService {
     @Autowired
     UserRepository userRepository;
 
-    public List<CommentResponseDTO> getCommentsByProductId(int id) {
+    public List<CommentResponseDTO> getCommentsForProduct(Product product) {
         List<CommentResponseDTO> comments = new ArrayList<>();
-        for (Comment c : commentsRepository.getCommentByProductId(id)) {
+        for (Comment c : product.getComments()) {
             comments.add(new CommentResponseDTO(c));
         }
         return comments;
     }
 
-    public CommentResponseDTO addComment(int product_id, int user_id, String comment) {
+    public CommentResponseDTO addComment(Product product, User user_id, String comment) {
         Comment c = new Comment();
         c.setComment(comment);
         c.setOwnerId(user_id);
-        c.setProductId(product_id);
+        c.setProductId(product);
         c.setPostDate(LocalDateTime.now());
         return new CommentResponseDTO(commentsRepository.save(c));
     }
 
-    public CommentResponseDTO edit(int comment_id, int user_id, String newComment) {
+    public CommentResponseDTO edit(int comment_id, User user, String newComment) {
         if (commentsRepository.getById(comment_id) == null){
             throw new NotFoundException("comment not found");
         }
-        if (commentsRepository.getById(comment_id).getOwnerId() != user_id) {
+        if (commentsRepository.getById(comment_id).getOwnerId() != user) {
             throw new AuthenticationException("you cannot change comments, which are not yours");
         }
         Comment comment = commentsRepository.getById(comment_id);
@@ -52,11 +54,11 @@ public class CommentService {
         return new CommentResponseDTO(commentsRepository.save(comment));
     }
 
-    public void delete(int comment_id, Integer loggedUser) {
+    public void delete(int comment_id, User user) {
         if (commentsRepository.getById(comment_id) == null){
             throw new NotFoundException("comment not found");
         }
-        if (commentsRepository.getById(comment_id).getOwnerId() != loggedUser) {
+        if (commentsRepository.getById(comment_id).getOwnerId() != user) {
             throw new AuthenticationException("you cannot delete comments, which are not yours");
         }
         commentsRepository.delete(commentsRepository.getById(comment_id));
@@ -80,12 +82,14 @@ public class CommentService {
                 user.getLikedComments().add(comment);
                 comment.getLikers().add(user);
                 break;
-            default:
+            case 0:
                 user.getDislikedComments().remove(comment);
                 comment.getLikers().remove(user);
                 user.getLikedComments().remove(comment);
                 comment.getDislikers().remove(user);
                 break;
+            default:
+                throw new BadRequestException("Wrong credential!");
         }
         userRepository.save(user);
     }

@@ -1,7 +1,6 @@
 package technomarket.model.pojo;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -18,8 +17,12 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int productId;
-    private int ownerId;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product productId;
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User ownerId;
     private String comment;
     private LocalDateTime postDate;
     @ManyToMany

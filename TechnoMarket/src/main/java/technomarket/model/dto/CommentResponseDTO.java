@@ -24,8 +24,8 @@ public class CommentResponseDTO {
 
     public CommentResponseDTO(Comment comment){
         this.id = comment.getId();
-        this.productId = comment.getProductId();
-        this.ownerId = comment.getOwnerId();
+        this.productId = comment.getProductId().getId();
+        this.ownerId = comment.getOwnerId().getId();
         this.comment = comment.getComment();
         this.postDate = comment.getPostDate();
         this.likes = comment.getLikers().size();
