@@ -3,6 +3,7 @@ package technomarket.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.exeptions.AuthenticationException;
+import technomarket.model.dto.requestDTO.DiscountDTO;
 import technomarket.model.pojo.Discount;
 import technomarket.model.pojo.User;
 import technomarket.service.DiscountService;
@@ -17,12 +18,12 @@ public class DiscountsController extends Controller{
     private DiscountService discountService;
 
     @PutMapping("/discounts")
-    public Discount addDiscount(@RequestBody Discount discount, HttpSession session){
+    public Discount addDiscount(@RequestBody DiscountDTO discountDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
         }
-        return discountService.addDiscount(discount);
+        return discountService.addDiscount(discountDTO);
     }
 
     @GetMapping("/discounts/{id}")
@@ -31,12 +32,12 @@ public class DiscountsController extends Controller{
     }
 
     @PostMapping("/discounts/{id}")
-    public Discount editDiscount(@PathVariable int id, @RequestBody Discount discount, HttpSession session){
+    public Discount editDiscount(@PathVariable int id, @RequestBody DiscountDTO discountDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
         }
-        return discountService.edit(discount, id);
+        return discountService.edit(discountDTO, id);
     }
 
     @DeleteMapping("/discounts/{id}")

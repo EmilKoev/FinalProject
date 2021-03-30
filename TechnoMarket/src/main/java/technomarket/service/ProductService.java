@@ -70,6 +70,7 @@ public class ProductService {
         SubCategory subCategory = subCategoryService.getSubCategory(editProductDTO.getSubCategoryId());
         Discount discount = discountService.getDiscount(editProductDTO.getDiscountId());
         Product product = getById(id);
+        product.setName(editProductDTO.getName());
         product.setBrand(editProductDTO.getBrand());
         product.setSubCategory(subCategory);
         product.setPrice(editProductDTO.getPrice());

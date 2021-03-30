@@ -7,9 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.catalina.LifecycleState;
+import technomarket.model.dto.requestDTO.DiscountDTO;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -34,5 +36,13 @@ public class Discount {
     @OneToMany(mappedBy = "discount")
     @JsonBackReference
     private List<Product> productList;
+
+    public Discount(DiscountDTO discountDTO){
+        this.title = discountDTO.getTitle();
+        this.discountPercent = discountDTO.getDiscountPercent();
+        this.startAt = discountDTO.getStartAt();
+        this.endAt = discountDTO.getEndAt();
+        this.productList = new ArrayList<>();
+    }
 
 }

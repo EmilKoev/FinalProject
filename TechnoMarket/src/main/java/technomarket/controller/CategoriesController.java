@@ -19,12 +19,12 @@ public class CategoriesController extends Controller{
     private CategoryService service;
 
     @PutMapping("/categories")
-    public ResponseCategoryDTO createCategory(@RequestBody Category category, HttpSession session){
+    public ResponseCategoryDTO createCategory(@RequestBody RequestCategoryDTO categoryDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
         }
-        return service.addCategory(category);
+        return service.addCategory(categoryDTO);
     }
 
     @GetMapping("/categories/{id}")

@@ -62,6 +62,7 @@ public class Product {
     List<User> dislikers;
 
     public Product(ProductDTO productDTO, SubCategory subCategory, Discount discount){
+        this.name = productDTO.getName();
         this.brand = productDTO.getBrand();
         this.subCategory = subCategory;
         this.price = productDTO.getPrice();

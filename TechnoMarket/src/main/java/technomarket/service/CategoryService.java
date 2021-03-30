@@ -18,7 +18,8 @@ public class CategoryService {
     @Autowired
     private CategoryRepository repository;
 
-    public ResponseCategoryDTO addCategory(Category category) {
+    public ResponseCategoryDTO addCategory(RequestCategoryDTO categoryDTO) {
+        Category category = new Category(categoryDTO);
        repository.save(category);
        return new ResponseCategoryDTO(category);
     }
