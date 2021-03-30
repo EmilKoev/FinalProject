@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 import technomarket.model.dto.productDTO.ProductResponseDTO;
-import technomarket.model.dto.userDTO.UserWithoutPassDTO;
+import technomarket.model.dto.responseDTO.UserWithoutPassDTO;
 import technomarket.model.pojo.Order;
 import technomarket.model.pojo.Product;
 
