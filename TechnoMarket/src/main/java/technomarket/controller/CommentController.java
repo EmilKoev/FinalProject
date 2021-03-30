@@ -2,9 +2,9 @@ package technomarket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import technomarket.model.dto.CommentDTO;
-import technomarket.model.dto.ReactDTO;
-import technomarket.model.dto.CommentResponseDTO;
+import technomarket.model.dto.requestDTO.CommentDTO;
+import technomarket.model.dto.requestDTO.ReactDTO;
+import technomarket.model.dto.responseDTO.CommentResponseDTO;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
 import technomarket.service.CommentService;

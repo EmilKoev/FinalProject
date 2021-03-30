@@ -1,9 +1,10 @@
-package technomarket.model.dto.userDTO;
+package technomarket.model.dto.responseDTO;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
+import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
 
 @NoArgsConstructor
@@ -35,7 +36,10 @@ public class UserWithoutPassDTO {
         if (user.getOrder().getProducts() != null) {
             countOfProductsInCart = user.getOrder().getProducts().size();
         }
-        totalPriceOfAllProductsInCart = user.getOrder().getPrice();
+        totalPriceOfAllProductsInCart = 0;
+        for (Product p :user.getOrder().getProducts() ) {
+            totalPriceOfAllProductsInCart += p.getPrice();
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-package technomarket.model.dto.productDTO;
+package technomarket.model.dto.responseDTO;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -21,6 +21,7 @@ import java.util.List;
 public class ResponseProductDTO {
 
     private int id;
+    private String name;
     private String brand;
     private SubCategory subCategory;
     private double price;
@@ -34,6 +35,7 @@ public class ResponseProductDTO {
 
     public ResponseProductDTO(Product product){
         this.id = product.getId();
+        this.name = product.getName();
         this.brand = product.getBrand();
         this.subCategory = product.getSubCategory();
         this.price = product.getPrice();
@@ -43,6 +45,7 @@ public class ResponseProductDTO {
         this.attributes = product.getAttributes();
         this.likes = product.getLikers().size();
         this.dislikes = product.getDislikers().size();
+        this.comments = product.getComments().size();
     }
 
 }

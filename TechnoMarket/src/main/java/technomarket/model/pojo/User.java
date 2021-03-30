@@ -1,18 +1,21 @@
 package technomarket.model.pojo;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import technomarket.model.dto.userDTO.RegisterRequestUserDTO;
+import technomarket.model.dto.requestDTO.userDTO.RegisterRequestUserDTO;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Setter
 @Getter
 @Entity
+@EqualsAndHashCode
 @Table(name="users")
 public class User {
 
@@ -51,5 +54,18 @@ public class User {
         this.isSubscribed = userDTO.isSubscribed();
         this.phone = userDTO.getPhone();
         this.address = userDTO.getAddress();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return this.id == user.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import technomarket.exeptions.AuthenticationException;
 import technomarket.exeptions.BadRequestException;
 import technomarket.exeptions.NotFoundException;
-import technomarket.model.dto.ReactDTO;
-import technomarket.model.dto.CommentResponseDTO;
+import technomarket.model.dto.requestDTO.ReactDTO;
+import technomarket.model.dto.responseDTO.CommentResponseDTO;
 import technomarket.model.pojo.Comment;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
@@ -71,12 +71,18 @@ public class CommentService {
         Comment comment = commentsRepository.getById(comment_id);
         switch (reactDTO.getReact()){
             case -1:
+                if (comment.getDislikers().contains(user)){
+                    throw new BadRequestException("You already dislike this comment!");
+                }
                 user.getLikedComments().remove(comment);
                 comment.getDislikers().add(user);
                 user.getDislikedComments().add(comment);
                 comment.getLikers().remove(user);
                 break;
             case 1:
+                if (comment.getLikers().contains(user)){
+                    throw new BadRequestException("You already like this comment!");
+                }
                 user.getDislikedComments().remove(comment);
                 comment.getDislikers().remove(user);
                 user.getLikedComments().add(comment);

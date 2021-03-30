@@ -1,4 +1,4 @@
-package technomarket.model.dto;
+package technomarket.model.dto.responseDTO;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package technomarket.model.dto.productDTO;
+package technomarket.model.dto.requestDTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

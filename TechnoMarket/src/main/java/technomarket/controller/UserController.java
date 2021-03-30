@@ -3,8 +3,12 @@ package technomarket.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.exeptions.BadRequestException;
-import technomarket.model.dto.*;
-import technomarket.model.dto.userDTO.*;
+import technomarket.model.dto.requestDTO.userDTO.LoginDTO;
+import technomarket.model.dto.requestDTO.userDTO.PasswordDTO;
+import technomarket.model.dto.requestDTO.userDTO.RegisterRequestUserDTO;
+import technomarket.model.dto.requestDTO.userDTO.UserEditRequestDTO;
+import technomarket.model.dto.responseDTO.OrderResponseDTO;
+import technomarket.model.dto.responseDTO.UserWithoutPassDTO;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
 import technomarket.service.ProductService;
@@ -60,6 +64,7 @@ public class UserController extends Controller {
     @DeleteMapping("/user")
     public void delete(@RequestBody PasswordDTO password , HttpSession session){
         User user = sessionManager.getLoggedUser(session);
+        sessionManager.logoutUser(session);
         userService.delete(password ,user);
     }
 

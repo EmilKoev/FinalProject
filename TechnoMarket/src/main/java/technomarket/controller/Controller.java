@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import technomarket.exeptions.AuthenticationException;
 import technomarket.exeptions.BadRequestException;
 import technomarket.exeptions.NotFoundException;
-import technomarket.model.dto.ErrorDTO;
+import technomarket.model.dto.responseDTO.ErrorDTO;
 
 @org.springframework.stereotype.Controller
 public abstract class Controller {

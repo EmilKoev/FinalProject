@@ -1,4 +1,4 @@
-package technomarket.model.dto.productDTO;
+package technomarket.model.dto.requestDTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -14,6 +14,7 @@ import java.util.List;
 @Component
 public class ProductDTO {
 
+    private String name;
     private String brand;
     @JsonProperty("sub_category_id")
     private int subCategoryId;

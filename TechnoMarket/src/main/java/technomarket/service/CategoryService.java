@@ -3,8 +3,8 @@ package technomarket.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import technomarket.exeptions.NotFoundException;
-import technomarket.model.dto.categoryDTO.RequestCategoryDTO;
-import technomarket.model.dto.categoryDTO.ResponseCategoryDTO;
+import technomarket.model.dto.requestDTO.RequestCategoryDTO;
+import technomarket.model.dto.responseDTO.ResponseCategoryDTO;
 import technomarket.model.pojo.Category;
 import technomarket.model.repository.CategoryRepository;
 

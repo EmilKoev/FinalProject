@@ -1,4 +1,4 @@
-package technomarket.model.dto.requestDTO;
+package technomarket.model.dto.requestDTO.userDTO;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
