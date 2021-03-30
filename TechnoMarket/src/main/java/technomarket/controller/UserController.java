@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.exeptions.BadRequestException;
 import technomarket.model.dto.requestDTO.userDTO.LoginDTO;
-import technomarket.model.dto.requestDTO.userDTO.PasswordDTO;
+import technomarket.model.dto.requestDTO.PasswordDTO;
 import technomarket.model.dto.requestDTO.userDTO.RegisterRequestUserDTO;
 import technomarket.model.dto.requestDTO.userDTO.UserEditRequestDTO;
 import technomarket.model.dto.responseDTO.OrderResponseDTO;

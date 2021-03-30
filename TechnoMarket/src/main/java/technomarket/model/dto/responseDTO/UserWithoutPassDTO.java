@@ -35,10 +35,10 @@ public class UserWithoutPassDTO {
         isAdmin = user.isAdmin();
         if (user.getOrder().getProducts() != null) {
             countOfProductsInCart = user.getOrder().getProducts().size();
-        }
-        totalPriceOfAllProductsInCart = 0;
-        for (Product p :user.getOrder().getProducts() ) {
-            totalPriceOfAllProductsInCart += p.getPrice();
+            totalPriceOfAllProductsInCart = 0;
+            for (Product p :user.getOrder().getProducts() ) {
+                totalPriceOfAllProductsInCart += p.getPrice();
+            }
         }
     }
 

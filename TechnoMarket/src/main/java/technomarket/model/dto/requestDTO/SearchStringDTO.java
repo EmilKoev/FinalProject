@@ -1,4 +1,4 @@
-package technomarket.model.dto.requestDTO.userDTO;
+package technomarket.model.dto.requestDTO;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 @Setter
 @NoArgsConstructor
 @Component
-public class PasswordDTO {
+public class SearchStringDTO {
 
-    private String password;
+    private String search;
+
 }

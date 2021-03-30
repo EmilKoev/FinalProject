@@ -5,11 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technomarket.exeptions.BadRequestException;
 import technomarket.exeptions.NotFoundException;
-import technomarket.model.dto.requestDTO.AttributeDTO;
-import technomarket.model.dto.requestDTO.EditProductDTO;
-import technomarket.model.dto.requestDTO.ProductDTO;
+import technomarket.model.dto.requestDTO.*;
 import technomarket.model.dto.responseDTO.ResponseProductDTO;
-import technomarket.model.dto.requestDTO.ReactDTO;
 import technomarket.model.pojo.Discount;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.SubCategory;
@@ -17,6 +14,7 @@ import technomarket.model.pojo.User;
 import technomarket.model.repository.ProductRepository;
 import technomarket.model.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -112,6 +110,16 @@ public class ProductService {
         productRepository.save(product);
         userRepository.save(user);
         return new ResponseProductDTO(product);
+    }
+
+    public List<Product> searchByName(SearchStringDTO searchStringDTO) {
+        return productRepository.findAllByNameLike("%" + searchStringDTO.getSearch() + "%");
+    }
+
+    public List<Product> searchByAttributes(AttributesDTO attributesDTO) {
+
+        //todo...
+        return null;
     }
 }
 
