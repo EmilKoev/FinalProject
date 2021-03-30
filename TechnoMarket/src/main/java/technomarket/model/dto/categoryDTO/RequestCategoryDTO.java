@@ -1,19 +1,16 @@
-package technomarket.model.dto;
+package technomarket.model.dto.categoryDTO;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+@Component
 @Setter
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-@Component
-public class AttributeDTO {
+public class RequestCategoryDTO {
 
     private String name;
-    private String value;
 
 }

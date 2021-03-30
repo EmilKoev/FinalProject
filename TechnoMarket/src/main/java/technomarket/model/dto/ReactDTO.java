@@ -5,11 +5,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-@Getter
 @Setter
-@NoArgsConstructor
+@Getter
 @Component
-public class PasswordDTO {
-
-    private String password;
+@NoArgsConstructor
+public class ReactDTO {
+    /*
+            1: like
+            0: none
+           -1: dislike
+     */
+    private int react;
 }

@@ -3,7 +3,7 @@ package technomarket.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.model.dto.CommentDTO;
-import technomarket.model.dto.CommentReactDTO;
+import technomarket.model.dto.ReactDTO;
 import technomarket.model.dto.CommentResponseDTO;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
@@ -49,7 +49,7 @@ public class CommentController extends Controller{
     }
 
     @PostMapping("comments/react/{comment_id}")
-    public void reactComment(HttpSession session, @PathVariable int comment_id, @RequestBody CommentReactDTO reactDTO){
+    public void reactComment(HttpSession session, @PathVariable int comment_id, @RequestBody ReactDTO reactDTO){
         commentService.react(reactDTO,sessionManager.getLoggedUser(session), comment_id);
     }
 }

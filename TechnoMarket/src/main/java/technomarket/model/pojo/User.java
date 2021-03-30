@@ -1,11 +1,10 @@
 package technomarket.model.pojo;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import technomarket.model.dto.RegisterRequestUserDTO;
+import technomarket.model.dto.userDTO.RegisterRequestUserDTO;
 
 import javax.persistence.*;
 import java.util.List;
@@ -37,7 +36,11 @@ public class User {
     @ManyToMany(mappedBy = "likers")
     private List<Comment> likedComments;
     @ManyToMany(mappedBy = "dislikers")
-    List<Comment> dislikedComments;
+    private List<Comment> dislikedComments;
+    @ManyToMany(mappedBy = "likers")
+    private List<Product> likedProducts;
+    @ManyToMany(mappedBy = "dislikers")
+    private List<Product> dislikedProducts;
 
 
     public User(RegisterRequestUserDTO userDTO){

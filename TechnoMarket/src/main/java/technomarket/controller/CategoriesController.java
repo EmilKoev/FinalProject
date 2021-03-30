@@ -3,11 +3,14 @@ package technomarket.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.exeptions.AuthenticationException;
+import technomarket.model.dto.categoryDTO.RequestCategoryDTO;
+import technomarket.model.dto.categoryDTO.ResponseCategoryDTO;
 import technomarket.model.pojo.Category;
 import technomarket.model.pojo.User;
 import technomarket.service.CategoryService;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 public class CategoriesController extends Controller{
@@ -16,7 +19,7 @@ public class CategoriesController extends Controller{
     private CategoryService service;
 
     @PutMapping("/categories")
-    public Category createCategory(@RequestBody Category category, HttpSession session){
+    public ResponseCategoryDTO createCategory(@RequestBody Category category, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
@@ -25,10 +28,34 @@ public class CategoriesController extends Controller{
     }
 
     @GetMapping("/categories/{id}")
-    public Category getCategory(@PathVariable int id){
-        return service.getCategory(id);
+    public ResponseCategoryDTO getCategory(@PathVariable int id){
+        Category category = service.getCategory(id);
+        return new ResponseCategoryDTO(category);
     }
 
-    //TODO edit and delete methods
+    @PostMapping("/categories/{id}")
+    public ResponseCategoryDTO editCategory(@PathVariable int id, @RequestBody RequestCategoryDTO categoryDTO, HttpSession session){
+        User user = sessionManager.getLoggedUser(session);
+        if (!user.isAdmin()){
+            throw  new AuthenticationException("Only admins can do this!");
+        }
+        return service.edit(id, categoryDTO);
+    }
+
+    @DeleteMapping("/categories/{id}")
+    public String deleteCategory(@PathVariable int id, HttpSession session){
+        User user = sessionManager.getLoggedUser(session);
+        if (!user.isAdmin()){
+            throw  new AuthenticationException("Only admins can do this!");
+        }
+        service.delete(id);
+        return "Delete successful";
+    }
+
+
+    @GetMapping("/categories")
+    public List<ResponseCategoryDTO> getAllCategories(){
+        return service.getAllCategories();
+    }
 
 }

@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import technomarket.model.dto.CreateRequestSubCategoryDTO;
+import technomarket.model.dto.categoryDTO.RequestSubCategoryDTO;
 
 import javax.persistence.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.List;
 
 @NoArgsConstructor
 @Setter
@@ -18,18 +18,20 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SubCategory {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
     @JoinColumn(name = "category_id")
     @JsonBackReference
     private Category category;
     private String name;
-    private static AtomicInteger count = new AtomicInteger(1);
+    @OneToMany(mappedBy = "subCategory")
+    @JsonBackReference
+    private List<Product> products;
 
-    public SubCategory(CreateRequestSubCategoryDTO subCategoryDTO, Category category){
+    public SubCategory(RequestSubCategoryDTO subCategoryDTO, Category category){
         this.name = subCategoryDTO.getName();
         this.category = category;
-        this.id = count.getAndIncrement();
     }
 
 }

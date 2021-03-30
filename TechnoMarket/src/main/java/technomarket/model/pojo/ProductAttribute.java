@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import technomarket.model.dto.AttributeDTO;
+import technomarket.model.dto.productDTO.AttributeDTO;
 
 import javax.persistence.*;
 import java.io.Serializable;

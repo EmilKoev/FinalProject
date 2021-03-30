@@ -1,4 +1,4 @@
-package technomarket.model.dto;
+package technomarket.model.dto.productDTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -28,9 +28,9 @@ public class ProductResponseDTO {
     public ProductResponseDTO(Product product){
         id = product.getId();
         brand = product.getBrand();
-        subCategoryId = product.getSubCategoryId();
+        subCategoryId = product.getSubCategory().getId();
         price = product.getPrice();
-        discountId = product.getDiscountId();
+        discountId = product.getDiscount().getId();
         comments = product.getComments().size();
         attributeList = product.getAttributes();
     }

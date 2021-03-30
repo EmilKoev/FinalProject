@@ -1,13 +1,16 @@
 package technomarket.model.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.catalina.LifecycleState;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @NoArgsConstructor
 @Setter
@@ -28,5 +31,8 @@ public class Discount {
     @JsonProperty("end_at")
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate endAt;
+    @OneToMany(mappedBy = "discount")
+    @JsonBackReference
+    private List<Product> productList;
 
 }

@@ -1,6 +1,6 @@
-package technomarket.model.dto;
+package technomarket.model.dto.productDTO;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Component
-public class CreateRequestSubCategoryDTO {
+public class AttributeDTO {
 
-    @JsonProperty("category_id")
-    private int categoryId;
     private String name;
+    private String value;
 
 }

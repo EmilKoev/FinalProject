@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technomarket.exeptions.BadRequestException;
 import technomarket.exeptions.NotFoundException;
-import technomarket.model.dto.AttributeDTO;
-import technomarket.model.dto.EditAttributeDTO;
+import technomarket.model.dto.productDTO.AttributeDTO;
+import technomarket.model.dto.productDTO.EditAttributeDTO;
 import technomarket.model.pojo.AttributeId;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.ProductAttribute;
@@ -25,7 +25,7 @@ public class AttributeService {
 
     public ProductAttribute addAttribute(AttributeDTO attributeDTO, int productId) {
         try {
-            ProductAttribute attribute = getAttribute(attributeDTO.getName(), productId);
+            getAttribute(attributeDTO.getName(), productId);
         }catch (NotFoundException exception){
             Product product = productService.getById(productId);
             ProductAttribute newAttribute = new ProductAttribute(attributeDTO, product);

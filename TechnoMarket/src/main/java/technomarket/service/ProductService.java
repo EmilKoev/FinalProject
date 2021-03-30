@@ -3,12 +3,19 @@ package technomarket.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import technomarket.exeptions.BadRequestException;
 import technomarket.exeptions.NotFoundException;
-import technomarket.model.dto.ProductDTO;
-import technomarket.model.dto.AttributeDTO;
-import technomarket.model.dto.EditProductDTO;
+import technomarket.model.dto.*;
+import technomarket.model.dto.productDTO.AttributeDTO;
+import technomarket.model.dto.productDTO.EditProductDTO;
+import technomarket.model.dto.productDTO.ProductDTO;
+import technomarket.model.dto.productDTO.ResponseProductDTO;
+import technomarket.model.pojo.Discount;
 import technomarket.model.pojo.Product;
+import technomarket.model.pojo.SubCategory;
+import technomarket.model.pojo.User;
 import technomarket.model.repository.ProductRepository;
+import technomarket.model.repository.UserRepository;
 
 import java.util.Optional;
 
@@ -23,6 +30,8 @@ public class ProductService {
     private DiscountService discountService;
     @Autowired
     private SubCategoryService subCategoryService;
+    @Autowired
+    private UserRepository userRepository;
 
 
     public Product getById(int id) {
@@ -35,15 +44,15 @@ public class ProductService {
     }
 
     @Transactional
-    public Product addProduct(ProductDTO productDTO) {
-        subCategoryService.getSubCategory(productDTO.getSubCategoryId());
-        discountService.getDiscount(productDTO.getDiscountId());
-        Product product = new Product(productDTO);
+    public ResponseProductDTO addProduct(ProductDTO productDTO) {
+        SubCategory subCategory = subCategoryService.getSubCategory(productDTO.getSubCategoryId());
+        Discount discount = discountService.getDiscount(productDTO.getDiscountId());
+        Product product = new Product(productDTO, subCategory, discount);
         productRepository.save(product);
         for (AttributeDTO attributeDTO : productDTO.getAttributeList()) {
             attributeService.addAttribute(attributeDTO, product.getId());
         }
-        return product;
+        return new ResponseProductDTO(product);
     }
 
     void save(Product product) {
@@ -52,17 +61,57 @@ public class ProductService {
 
     public void delete(int id) {
         Product product = getById(id);
+        SubCategory subCategory = product.getSubCategory();
+        Discount discount = product.getDiscount();
+        subCategory.getProducts().remove(product);
+        discount.getProductList().remove(product);
         productRepository.delete(product);
     }
 
-    public Product edit(int id, EditProductDTO editProductDTO) {
+    public ResponseProductDTO edit(int id, EditProductDTO editProductDTO) {
+        SubCategory subCategory = subCategoryService.getSubCategory(editProductDTO.getSubCategoryId());
+        Discount discount = discountService.getDiscount(editProductDTO.getDiscountId());
         Product product = getById(id);
         product.setBrand(editProductDTO.getBrand());
-        product.setSubCategoryId(editProductDTO.getSubCategoryId());
+        product.setSubCategory(subCategory);
         product.setPrice(editProductDTO.getPrice());
         product.setInfo(editProductDTO.getInfo());
-        product.setDiscountId(editProductDTO.getDiscountId());
-        return productRepository.save(product);
+        product.setDiscount(discount);
+        productRepository.save(product);
+        return new ResponseProductDTO(product);
+    }
+
+    public ResponseProductDTO react(ReactDTO reactDTO, int productId, User user) {
+        Product product = getById(productId);
+        switch (reactDTO.getReact()){
+            case -1:
+                if (!product.getDislikers().contains(user)){
+                    product.getLikers().remove(user);
+                    product.getDislikers().add(user);
+                    user.getLikedProducts().remove(product);
+                    user.getDislikedProducts().add(product);
+                }
+                break;
+            case 1:
+                if (!product.getLikers().contains(user)) {
+                    product.getLikers().add(user);
+                    product.getDislikers().remove(user);
+                    user.getLikedProducts().add(product);
+                    user.getDislikedProducts().remove(product);
+                }
+                break;
+            case 0:
+                product.getLikers().remove(user);
+                product.getDislikers().remove(user);
+                user.getLikedProducts().remove(product);
+                user.getDislikedProducts().remove(product);
+                break;
+            default:
+                throw new BadRequestException("Wrong credential!");
+        }
+        productRepository.save(product);
+        userRepository.save(user);
+        return new ResponseProductDTO(product);
     }
 }
 

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.exeptions.BadRequestException;
 import technomarket.model.dto.*;
-import technomarket.model.pojo.Order;
+import technomarket.model.dto.userDTO.*;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
 import technomarket.service.ProductService;
@@ -20,7 +20,7 @@ public class UserController extends Controller {
     private ProductService productService;
 
     @PutMapping("/user/register")
-    public UserWithoutPassDTO register(@RequestBody RegisterRequestUserDTO userDTO,HttpSession session){
+    public UserWithoutPassDTO register(@RequestBody RegisterRequestUserDTO userDTO, HttpSession session){
         if(sessionManager.isSomeoneLoggedIn(session)){
             throw new BadRequestException("You have to log out first!");
         }

@@ -1,4 +1,4 @@
-package technomarket.model.dto;
+package technomarket.model.dto.productDTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -6,11 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-@Component
-@NoArgsConstructor
-@Getter
+import java.util.List;
+
 @Setter
-public class EditProductDTO {
+@Getter
+@NoArgsConstructor
+@Component
+public class ProductDTO {
 
     private String brand;
     @JsonProperty("sub_category_id")
@@ -19,5 +21,7 @@ public class EditProductDTO {
     private String info;
     @JsonProperty("discount_id")
     private int discountId;
+    @JsonProperty("attribute_list")
+    private List<AttributeDTO> attributeList;
 
 }

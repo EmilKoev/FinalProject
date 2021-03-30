@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import technomarket.exeptions.AuthenticationException;
 import technomarket.exeptions.BadRequestException;
 import technomarket.model.dto.*;
+import technomarket.model.dto.userDTO.*;
 import technomarket.model.pojo.Order;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;

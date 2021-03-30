@@ -3,8 +3,10 @@ package technomarket.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.exeptions.AuthenticationException;
-import technomarket.model.dto.ProductDTO;
-import technomarket.model.dto.EditProductDTO;
+import technomarket.model.dto.ReactDTO;
+import technomarket.model.dto.productDTO.ProductDTO;
+import technomarket.model.dto.productDTO.EditProductDTO;
+import technomarket.model.dto.productDTO.ResponseProductDTO;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
 import technomarket.service.ProductService;
@@ -18,12 +20,13 @@ public class ProductsController extends Controller{
     private ProductService productService;
 
     @GetMapping("/products/{id}")
-    public Product getById(@PathVariable int id){
-        return productService.getById(id);
+    public ResponseProductDTO getById(@PathVariable int id){
+        Product product = productService.getById(id);
+        return new ResponseProductDTO(product);
     }
 
     @PutMapping("/add/products")
-    public Product addProduct(@RequestBody ProductDTO productDTO, HttpSession session){
+    public ResponseProductDTO addProduct(@RequestBody ProductDTO productDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
@@ -42,12 +45,20 @@ public class ProductsController extends Controller{
     }
 
     @PostMapping("/products/{id}")
-    public Product editProduct(@PathVariable int id, @RequestBody EditProductDTO editProductDTO, HttpSession session){
+    public ResponseProductDTO editProduct(@PathVariable int id, @RequestBody EditProductDTO editProductDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
         }
         return productService.edit(id, editProductDTO);
+    }
+
+    @PostMapping("/products/react/{productId}")
+    public ResponseProductDTO reactProduct(@RequestBody ReactDTO reactDTO,
+                                           @PathVariable int productId,
+                                           HttpSession session){
+        User user = sessionManager.getLoggedUser(session);
+        return productService.react(reactDTO, productId, user);
     }
 
 }

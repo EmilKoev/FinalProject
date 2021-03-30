@@ -1,5 +1,6 @@
 package technomarket.model.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +20,8 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    @OneToMany
-    @JsonManagedReference
+    @OneToMany(mappedBy = "category")
+    @JsonBackReference
     private List<SubCategory> subCategories;
 
 
