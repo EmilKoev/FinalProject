@@ -13,6 +13,8 @@ import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
 import technomarket.service.ProductService;
 import technomarket.service.UserService;
+import technomarket.utill.ValidationUtil;
+
 import javax.servlet.http.HttpSession;
 
 @RestController

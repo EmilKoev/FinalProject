@@ -61,12 +61,12 @@ public class ProductsController extends Controller{
     }
 
     @PostMapping("/products")
-    public List<Product> searchByName(@RequestBody SearchStringDTO searchStringDTO){
+    public List<ResponseProductDTO> searchByName(@RequestBody SearchStringDTO searchStringDTO){
         return productService.searchByName(searchStringDTO);
     }
 
     @PostMapping("/products/search")
-    public List<Product> searchByAttributes(@RequestBody AttributesDTO attributesDTO){
-        return productService.searchByAttributes(attributesDTO);
+    public List<ResponseProductDTO> searchByAttributes(@RequestBody FilterDTO filterDTO){
+        return productService.searchByAttributes(filterDTO);
     }
 }

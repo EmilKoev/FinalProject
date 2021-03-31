@@ -17,6 +17,7 @@ import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
 import technomarket.model.repository.OrderRepository;
 import technomarket.model.repository.UserRepository;
+import technomarket.utill.ValidationUtil;
 
 @Service
 public class UserService {
@@ -25,13 +26,13 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private ValidationUtil validationUtil;
 
     public UserWithoutPassDTO addUser(RegisterRequestUserDTO userDTO){
+        validationUtil.checkUser(userDTO);
         if(userRepository.findByEmail(userDTO.getEmail()) != null){
             throw new BadRequestException("Email already exists");
-        }
-        if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())){
-            throw new BadRequestException("Passwords don't match");
         }
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         userDTO.setPassword(encoder.encode(userDTO.getPassword()));
@@ -64,15 +65,13 @@ public class UserService {
     }
 
     public UserWithoutPassDTO edit(UserEditRequestDTO requestDto, User user) {
+        validationUtil.checkUser(requestDto);
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!encoder.matches(requestDto.getOldPassword(),user.getPassword())){
             throw new AuthenticationException("Wrong credentials");
         }else {
             if (requestDto.getNewPassword() != null){
                 user.setPassword(encoder.encode(requestDto.getNewPassword()));
-            }
-            if (requestDto.getFirstName() == null || requestDto.getLastName() == null || requestDto.getEmail() == null){
-                throw new BadRequestException("first name, last name and email is are required");
             }
             user.setFirstName(requestDto.getFirstName());
             user.setLastName(requestDto.getLastName());

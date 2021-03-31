@@ -16,6 +16,7 @@ public class UserEditRequestDTO {
     private String email;
     private String oldPassword;
     private String newPassword;
+    private String confirmNewPassword;
     private String address;
     private String phone;
     private boolean isSubscribed = true;
