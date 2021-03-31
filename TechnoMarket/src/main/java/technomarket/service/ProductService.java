@@ -5,11 +5,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technomarket.exeptions.BadRequestException;
 import technomarket.exeptions.NotFoundException;
+import technomarket.model.dao.ProductDao;
 import technomarket.model.dto.requestDTO.*;
+
+import technomarket.model.dto.responseDTO.ResponseProductDTO;
 import technomarket.model.pojo.*;
 import technomarket.model.repository.ProductRepository;
 import technomarket.model.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +30,8 @@ public class ProductService {
     private SubCategoryService subCategoryService;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ProductDao productDao;
 
 
     public Product getById(int id) {
@@ -102,14 +108,39 @@ public class ProductService {
         return product;
     }
 
-    public List<Product> searchByName(SearchStringDTO searchStringDTO) {
-        return productRepository.findAllByNameLike("%" + searchStringDTO.getSearch() + "%");
+    public List<ResponseProductDTO> searchByName(SearchStringDTO searchStringDTO) {
+       List<ResponseProductDTO> products = new ArrayList<>();
+        for (Product p : productRepository.findAllByNameLike("%" + searchStringDTO.getSearch() + "%")) {
+            products.add(new ResponseProductDTO(p));
+        }
+        return products;
     }
 
-    public List<Product> searchByAttributes(AttributesDTO attributesDTO) {
+    public List<ResponseProductDTO> searchByAttributes(FilterDTO filterDTO) {
+        List<Integer> ids = productDao.findAllProductsByFilter(filterDTO);
+        List<Product> firstFilter = productRepository.findAllByIdIn(ids);
+        List<ResponseProductDTO> filteredProducts = new ArrayList<>();
 
-        //todo...
-        return null;
+            for (Product p : firstFilter) {
+                int attributesFound = 0;
+                for (AttributeDTO attribute : filterDTO.getAttributes()) {
+                    boolean findAttribute = false;
+                    for (ProductAttribute a : p.getAttributes()) {
+                        if (attribute.getName().equalsIgnoreCase(a.getName())){
+                            if (attribute.getValue().equalsIgnoreCase(a.getValue())){
+                                findAttribute = true;
+                                attributesFound++;
+                                break;
+                            }
+                        }
+                    }
+
+                }
+                if (attributesFound == filterDTO.getAttributes().size()){
+                    filteredProducts.add(new ResponseProductDTO(p));
+                }
+            }
+        return filteredProducts;
     }
 }
 

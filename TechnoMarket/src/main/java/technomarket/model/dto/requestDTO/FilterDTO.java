@@ -11,7 +11,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Component
-public class AttributesDTO {
+public class FilterDTO {
 
+    private String brand;
+    private Integer categoryId;
+    private Integer subCategoryId;
     private List<AttributeDTO> attributes;
 }

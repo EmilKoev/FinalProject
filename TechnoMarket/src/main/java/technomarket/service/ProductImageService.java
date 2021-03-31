@@ -10,13 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import technomarket.exeptions.NotFoundException;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.ProductImage;
 import technomarket.model.repository.ProductImageRepository;
 
-import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
