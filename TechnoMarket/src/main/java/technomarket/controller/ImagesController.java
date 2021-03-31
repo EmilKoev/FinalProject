@@ -2,53 +2,68 @@ package technomarket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import technomarket.exeptions.AuthenticationException;
 import technomarket.model.pojo.ProductImage;
 import technomarket.model.pojo.User;
 import technomarket.service.ProductImageService;
-import technomarket.service.ProductService;
 
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 
 @RestController
 public class ImagesController extends Controller{
 
-    @Autowired
-    ProductService productService;
+    @Value("${file.path}")
+    private String filePath;
 
     @Autowired
     ProductImageService productImageService;
 
-    @Value("${file.path}")
-    private String filePath;
-
-    @PutMapping("/products/{id}/images")
-    public ProductImage upload(@PathVariable int id, @RequestPart MultipartFile file, HttpSession session) throws IOException {
-        User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw  new AuthenticationException("Only admins can do this!");
-        }
-        File pFile = new File(filePath + File.separator + id + "_" + System.nanoTime() + ".png");
-        OutputStream stream = new FileOutputStream(pFile);
-        stream.write(file.getBytes());
-        ProductImage productImage = new ProductImage();
-        productImage.setUrl(pFile.getAbsolutePath());
-        productImage.setProduct(productService.getById(id));
-        productImageService.save(productImage);
-        stream.close();
-        return productImage;
-    }
-
     @GetMapping(value = "/images/{id}", produces = "image/*")
-    public byte[] download(@PathVariable int id) throws IOException {
+    public byte[] getImageById(@PathVariable int id) throws IOException {//TODO rename
         ProductImage image = productImageService.getById(id);
         String url = image.getUrl();
         File file = new File(url);
         return Files.readAllBytes(file.toPath());
+    }
+
+    @GetMapping(value = "/download/{id}", produces = "image/*")
+    public ResponseEntity download(@PathVariable int id) {
+        return productImageService.download(id);
+    }
+
+    @PostMapping("/images/multi-upload/{productId}")
+    public List<ProductImage> multiUpload(@RequestParam("files") MultipartFile[] files,
+                                      @PathVariable int productId,
+                                          HttpSession session) {
+        User user = sessionManager.getLoggedUser(session);
+        if (!user.isAdmin()){
+            throw  new AuthenticationException("Only admins can do this!");
+        }
+        return productImageService.multiUpload(files, productId);
+    }
+
+    @PostMapping("/images/upload/{productId}")
+    public ProductImage upload(@RequestParam("file") MultipartFile file,
+                                                  @PathVariable int productId,
+                                                  HttpSession session) {
+        User user = sessionManager.getLoggedUser(session);
+        if (!user.isAdmin()){
+            throw  new AuthenticationException("Only admins can do this!");
+        }
+        return productImageService.upload(file, productId);
     }
 
 }

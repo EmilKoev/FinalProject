@@ -30,8 +30,6 @@ public class AttributeService {
             Product product = productService.getById(productId);
             ProductAttribute newAttribute = new ProductAttribute(attributeDTO, product);
             repository.save(newAttribute);
-            product.getAttributes().add(newAttribute);
-            productService.save(product);
             return newAttribute;
         }
         throw new BadRequestException("Product already has this attribute");
@@ -50,9 +48,6 @@ public class AttributeService {
 
     public void delete(String name, int productId) {
         ProductAttribute attribute = getAttribute(name, productId);
-        Product product = attribute.getProductId();
-        product.getAttributes().remove(attribute);
-        productService.save(product);
         repository.delete(attribute);
     }
 

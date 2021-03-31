@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.exeptions.AuthenticationException;
 import technomarket.model.dto.requestDTO.DiscountDTO;
+import technomarket.model.dto.responseDTO.MessageDTO;
 import technomarket.model.pojo.Discount;
 import technomarket.model.pojo.User;
 import technomarket.service.DiscountService;
@@ -41,13 +42,13 @@ public class DiscountsController extends Controller{
     }
 
     @DeleteMapping("/discounts/{id}")
-    public String deleteDiscount(@PathVariable int id, HttpSession session){
+    public MessageDTO deleteDiscount(@PathVariable int id, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
         }
         discountService.deleteDiscount(id);
-        return "Delete successful";
+        return new MessageDTO("Delete discount successful");
     }
 
     @GetMapping("/discounts")

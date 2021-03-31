@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.exeptions.AuthenticationException;
 import technomarket.model.dto.requestDTO.RequestSubCategoryDTO;
+import technomarket.model.dto.responseDTO.MessageDTO;
 import technomarket.model.dto.responseDTO.ResponseSubCategoryDTO;
 import technomarket.model.pojo.SubCategory;
 import technomarket.model.pojo.User;
@@ -23,7 +24,8 @@ public class SubCategoryController extends Controller{
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
         }
-        return service.addSubCategory(subCategoryDTO);
+        SubCategory subCategory = service.addSubCategory(subCategoryDTO);
+        return new ResponseSubCategoryDTO(subCategory);
     }
 
     @GetMapping("/sub_categories/{id}")
@@ -33,21 +35,22 @@ public class SubCategoryController extends Controller{
     }
 
     @PostMapping("/sub_categories/{id}")
-    public ResponseSubCategoryDTO editSubCategory(@PathVariable int id, @RequestBody RequestSubCategoryDTO subCategory, HttpSession session){
+    public ResponseSubCategoryDTO editSubCategory(@PathVariable int id, @RequestBody RequestSubCategoryDTO requestSubCategoryDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
         }
-        return service.edit(id, subCategory);
+        SubCategory subCategory = service.edit(id, requestSubCategoryDTO);
+        return new ResponseSubCategoryDTO(subCategory);
     }
 
     @DeleteMapping("/sub_categories/{id}")
-    public String deleteSubCategory(@PathVariable int id, HttpSession session){
+    public MessageDTO deleteSubCategory(@PathVariable int id, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
         }
         service.delete(id);
-        return "Delete successful";
+        return new MessageDTO("Delete sub category successful");
     }
 }

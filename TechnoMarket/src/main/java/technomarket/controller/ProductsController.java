@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.exeptions.AuthenticationException;
 import technomarket.model.dto.requestDTO.*;
+import technomarket.model.dto.responseDTO.MessageDTO;
 import technomarket.model.dto.responseDTO.ResponseProductDTO;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
@@ -30,17 +31,18 @@ public class ProductsController extends Controller{
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
         }
-        return productService.addProduct(productDTO);
+        Product product = productService.addProduct(productDTO);
+        return new ResponseProductDTO(product);
     }
 
     @DeleteMapping("/products/{id}")
-    public String deleteProduct(@PathVariable int id, HttpSession session){
+    public MessageDTO deleteProduct(@PathVariable int id, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
         }
         productService.delete(id);
-        return "Delete successful";
+        return new MessageDTO("Delete product successful");
     }
 
     @PostMapping("/products/{id}")
@@ -49,7 +51,8 @@ public class ProductsController extends Controller{
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
         }
-        return productService.edit(id, editProductDTO);
+        Product product = productService.edit(id, editProductDTO);
+        return new ResponseProductDTO(product);
     }
 
     @PostMapping("/products/react/{productId}")
@@ -57,7 +60,8 @@ public class ProductsController extends Controller{
                                            @PathVariable int productId,
                                            HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        return productService.react(reactDTO, productId, user);
+        Product product = productService.react(reactDTO, productId, user);
+        return new ResponseProductDTO(product);
     }
 
     @PostMapping("/products")

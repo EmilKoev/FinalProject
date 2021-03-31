@@ -6,11 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import technomarket.exeptions.BadRequestException;
 import technomarket.exeptions.NotFoundException;
 import technomarket.model.dto.requestDTO.*;
-import technomarket.model.dto.responseDTO.ResponseProductDTO;
-import technomarket.model.pojo.Discount;
-import technomarket.model.pojo.Product;
-import technomarket.model.pojo.SubCategory;
-import technomarket.model.pojo.User;
+import technomarket.model.pojo.*;
 import technomarket.model.repository.ProductRepository;
 import technomarket.model.repository.UserRepository;
 
@@ -42,31 +38,24 @@ public class ProductService {
     }
 
     @Transactional
-    public ResponseProductDTO addProduct(ProductDTO productDTO) {
+    public Product addProduct(ProductDTO productDTO) {
         SubCategory subCategory = subCategoryService.getSubCategory(productDTO.getSubCategoryId());
         Discount discount = discountService.getDiscount(productDTO.getDiscountId());
         Product product = new Product(productDTO, subCategory, discount);
         productRepository.save(product);
         for (AttributeDTO attributeDTO : productDTO.getAttributeList()) {
-            attributeService.addAttribute(attributeDTO, product.getId());
+            ProductAttribute attribute = attributeService.addAttribute(attributeDTO, product.getId());
+            product.getAttributes().add(attribute);
         }
-        return new ResponseProductDTO(product);
-    }
-
-    void save(Product product) {
-        productRepository.save(product);
+        return product;
     }
 
     public void delete(int id) {
         Product product = getById(id);
-        SubCategory subCategory = product.getSubCategory();
-        Discount discount = product.getDiscount();
-        subCategory.getProducts().remove(product);
-        discount.getProductList().remove(product);
         productRepository.delete(product);
     }
 
-    public ResponseProductDTO edit(int id, EditProductDTO editProductDTO) {
+    public Product edit(int id, EditProductDTO editProductDTO) {
         SubCategory subCategory = subCategoryService.getSubCategory(editProductDTO.getSubCategoryId());
         Discount discount = discountService.getDiscount(editProductDTO.getDiscountId());
         Product product = getById(id);
@@ -76,11 +65,11 @@ public class ProductService {
         product.setPrice(editProductDTO.getPrice());
         product.setInfo(editProductDTO.getInfo());
         product.setDiscount(discount);
-        productRepository.save(product);
-        return new ResponseProductDTO(product);
+        return productRepository.save(product);
     }
 
-    public ResponseProductDTO react(ReactDTO reactDTO, int productId, User user) {
+    @Transactional
+    public Product react(ReactDTO reactDTO, int productId, User user) {
         Product product = getById(productId);
         switch (reactDTO.getReact()){
             case -1:
@@ -110,7 +99,7 @@ public class ProductService {
         }
         productRepository.save(product);
         userRepository.save(user);
-        return new ResponseProductDTO(product);
+        return product;
     }
 
     public List<Product> searchByName(SearchStringDTO searchStringDTO) {

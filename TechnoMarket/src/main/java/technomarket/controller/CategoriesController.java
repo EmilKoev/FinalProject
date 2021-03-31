@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.exeptions.AuthenticationException;
 import technomarket.model.dto.requestDTO.RequestCategoryDTO;
+import technomarket.model.dto.responseDTO.MessageDTO;
 import technomarket.model.dto.responseDTO.ResponseCategoryDTO;
 import technomarket.model.pojo.Category;
 import technomarket.model.pojo.User;
 import technomarket.service.CategoryService;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,7 +26,8 @@ public class CategoriesController extends Controller{
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
         }
-        return service.addCategory(categoryDTO);
+        Category category = service.addCategory(categoryDTO);
+        return new ResponseCategoryDTO(category);
     }
 
     @GetMapping("/categories/{id}")
@@ -39,23 +42,29 @@ public class CategoriesController extends Controller{
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
         }
-        return service.edit(id, categoryDTO);
+        Category category = service.edit(id, categoryDTO);
+        return new ResponseCategoryDTO(category);
     }
 
     @DeleteMapping("/categories/{id}")
-    public String deleteCategory(@PathVariable int id, HttpSession session){
+    public MessageDTO deleteCategory(@PathVariable int id, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
         }
         service.delete(id);
-        return "Delete successful";
+        return new MessageDTO("Delete category successful!");
     }
 
 
     @GetMapping("/categories")
     public List<ResponseCategoryDTO> getAllCategories(){
-        return service.getAllCategories();
+        List<Category> categories = service.getAllCategories();
+        List<ResponseCategoryDTO> responseCategoryDTOList = new ArrayList<>();
+        for (Category c : categories) {
+            responseCategoryDTOList.add(new ResponseCategoryDTO(c));
+        }
+        return responseCategoryDTOList;
     }
 
 }

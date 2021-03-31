@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import technomarket.exeptions.AuthenticationException;
 import technomarket.model.dto.requestDTO.AttributeDTO;
 import technomarket.model.dto.requestDTO.EditAttributeDTO;
+import technomarket.model.dto.responseDTO.MessageDTO;
 import technomarket.model.pojo.ProductAttribute;
 import technomarket.model.pojo.User;
 import technomarket.service.AttributeService;
@@ -43,13 +44,13 @@ public class AttributeController extends Controller{
     }
 
     @DeleteMapping("/attributes/{name}/{productId}")
-    public String deleteAttribute(@PathVariable String name, @PathVariable int productId, HttpSession session){
+    public MessageDTO deleteAttribute(@PathVariable String name, @PathVariable int productId, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw new AuthenticationException("Only admins can do this!");
         }
         service.delete(name, productId);
-        return "Delete successful";
+        return new MessageDTO("Delete attribute successful");
     }
 
 
