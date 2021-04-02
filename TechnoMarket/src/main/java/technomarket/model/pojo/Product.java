@@ -9,6 +9,7 @@ import lombok.Setter;
 import technomarket.model.dto.requestDTO.ProductDTO;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,5 +73,12 @@ public class Product {
         this.likers = new ArrayList<>();
         this.dislikers = new ArrayList<>();
         this.comments = new ArrayList<>();
+    }
+
+    public double getPrice() {
+        if (discount.getStartAt().isBefore(LocalDate.now()) && discount.getEndAt().isBefore(LocalDate.now())){
+            return price - (price * (discount.getDiscountPercent()/100));
+        }
+        return price;
     }
 }
