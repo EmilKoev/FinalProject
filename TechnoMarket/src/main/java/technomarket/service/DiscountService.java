@@ -17,6 +17,8 @@ public class DiscountService {
 
     @Autowired
     private DiscountRepository repository;
+    @Autowired
+    private EmailService emailService;
 
     public Discount addDiscount(DiscountDTO discountDTO) {
         LocalDate start = discountDTO.getStartAt();
@@ -28,6 +30,7 @@ public class DiscountService {
             throw  new BadRequestException("Percentage of the discount must be more than 0!");
         }
         Discount discount = new Discount(discountDTO);
+        emailService.sendMessage(discount);
         return repository.save(discount);
     }
 
