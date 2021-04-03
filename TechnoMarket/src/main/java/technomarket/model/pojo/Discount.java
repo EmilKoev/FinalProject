@@ -44,5 +44,4 @@ public class Discount {
         this.endAt = discountDTO.getEndAt();
         this.productList = new ArrayList<>();
     }
-
 }
