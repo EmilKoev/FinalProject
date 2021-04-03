@@ -29,7 +29,7 @@ public class UserService {
     @Autowired
     private ValidationUtil validationUtil;
 
-    public UserWithoutPassDTO addUser(RegisterRequestUserDTO userDTO){
+    public User addUser(RegisterRequestUserDTO userDTO){
         validationUtil.checkUser(userDTO);
         if(userRepository.findByEmail(userDTO.getEmail()) != null){
             throw new BadRequestException("Email already exists");
@@ -45,10 +45,10 @@ public class UserService {
         order.setAddress(user.getAddress());
         orderRepository.save(order);
 
-        return new UserWithoutPassDTO(user);
+        return user;
     }
 
-    public UserWithoutPassDTO login(LoginDTO loginDTO) {
+    public User login(LoginDTO loginDTO) {
         User user = userRepository.findByEmail(loginDTO.getEmail());
         if (user == null){
             throw new AuthenticationException("Wrong credentials");
@@ -57,12 +57,12 @@ public class UserService {
             if (!encoder.matches(loginDTO.getPassword(), user.getPassword())){
                 throw  new AuthenticationException("Wrong credentials");
             }else {
-                return new UserWithoutPassDTO(user);
+                return user;
             }
         }
     }
 
-    public UserWithoutPassDTO edit(UserEditRequestDTO requestDto, User user) {
+    public User edit(UserEditRequestDTO requestDto, User user) {
         validationUtil.checkUser(requestDto);
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!encoder.matches(requestDto.getOldPassword(),user.getPassword())){
@@ -83,7 +83,7 @@ public class UserService {
             user.setPhone(requestDto.getPhone());
             user.setSubscribed(requestDto.isSubscribed());
             userRepository.save(user);
-            return new  UserWithoutPassDTO(user);
+            return user;
         }
     }
 
@@ -97,24 +97,24 @@ public class UserService {
         }
     }
 
-    public OrderResponseDTO addProductToCart(User user, Product product) {
+    public Order addProductToCart(User user, Product product) {
         user.getOrder().getProducts().add(product);
         user.getOrder().setPrice(user.getOrder().getPrice() + product.getPrice());
         orderRepository.save(user.getOrder());
-        return new OrderResponseDTO(orderRepository.getByUserId(user.getId()));
+        return orderRepository.getByUserId(user.getId());
     }
 
-    public OrderResponseDTO removeProductFromCart(User user, Product product) {
+    public Order removeProductFromCart(User user, Product product) {
         if (!user.getOrder().getProducts().contains(product)){
             throw new BadRequestException("No product like this in cart!");
         }
         user.getOrder().getProducts().remove(product);
         user.getOrder().setPrice(user.getOrder().getPrice() - product.getPrice());
         orderRepository.save(user.getOrder());
-        return new OrderResponseDTO(orderRepository.getByUserId(user.getId()));
+        return orderRepository.getByUserId(user.getId());
     }
 
-    public OrderResponseDTO getProductsFromCart(User user) {
-        return new OrderResponseDTO(orderRepository.getByUserId(user.getId()));
+    public Order getProductsFromCart(User user) {
+        return orderRepository.getByUserId(user.getId());
     }
 }
