@@ -5,12 +5,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @Component
 public class SearchStringDTO {
 
+    @NotNull(message = "Search cannot be null")
     private String search;
 
 }

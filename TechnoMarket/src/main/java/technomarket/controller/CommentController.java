@@ -11,6 +11,7 @@ import technomarket.service.CommentService;
 import technomarket.service.ProductService;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -30,14 +31,14 @@ public class CommentController extends Controller{
     }
 
     @PostMapping("/comments/{id}")
-    public CommentResponseDTO addComment(@PathVariable(name = "id") int product_id, @RequestBody CommentDTO comment, HttpSession session) {
+    public CommentResponseDTO addComment(@PathVariable(name = "id") int product_id, @Valid @RequestBody CommentDTO comment, HttpSession session) {
         User user = sessionManager.getLoggedUser(session);
         Product product = productService.getById(product_id);
         return commentService.addComment(product,user,comment.getComment());
     }
 
     @PutMapping("/comments/{id}")
-    public CommentResponseDTO editComment(@PathVariable(name = "id") int comment_id,@RequestBody CommentDTO commentDTO,HttpSession session){
+    public CommentResponseDTO editComment(@PathVariable(name = "id") int comment_id,@Valid @RequestBody CommentDTO commentDTO,HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         return commentService.edit(comment_id,user,commentDTO.getComment());
     }

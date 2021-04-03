@@ -10,6 +10,7 @@ import technomarket.model.pojo.User;
 import technomarket.service.DiscountService;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class DiscountsController extends Controller{
     private DiscountService discountService;
 
     @PutMapping("/discounts")
-    public Discount addDiscount(@RequestBody DiscountDTO discountDTO, HttpSession session){
+    public Discount addDiscount(@Valid @RequestBody DiscountDTO discountDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");

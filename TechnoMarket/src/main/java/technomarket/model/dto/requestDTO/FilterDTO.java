@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.AttributeDTO;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter

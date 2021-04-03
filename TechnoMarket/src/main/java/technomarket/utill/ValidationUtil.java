@@ -2,6 +2,8 @@ package technomarket.utill;
 
 import org.springframework.stereotype.Component;
 import technomarket.exeptions.BadRequestException;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.EditProductDTO;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.ProductDTO;
 import technomarket.model.dto.requestDTO.userDTO.RegisterRequestUserDTO;
 import technomarket.model.dto.requestDTO.userDTO.UserEditRequestDTO;
 
@@ -15,8 +17,8 @@ public class ValidationUtil {
     private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
     private static final String PHONE_REGEX ="^((\\+)|(00)|(\\*)|())[0-9]{9,14}((\\#)|())$";
     private static final String NAME_REGEX = "^[a-zA-Z._-]{3,}$";
-    private static final Integer ADDRESS_LENGTH = 6;
-    private static final String INVALID_ADDRESS = "Address must be at least " + ADDRESS_LENGTH + " symbols";
+    public static final Integer ADDRESS_LENGTH = 6;
+    public static final String INVALID_ADDRESS = "Address must be at least " + ADDRESS_LENGTH + " symbols";
     private static final String PASSWORD_REQUIREMENTS = "Password must have one upper and lower letter, " +
             "one number and no spaces and it must be at least 8 symbols";
     private static final String INVALID_LAST_NAME = "Invalid last name";
@@ -24,7 +26,6 @@ public class ValidationUtil {
     private static final String INVALID_EMAIL = "Invalid email";
     private static final String INVALID_PHONE_NUMBER = "Invalid phone number";
     private static final String PASSWORDS_DO_NOT_MATCH = "New password and confirm password do not match";
-    public static final String ALL_CREDENTIAL_ARE_REQUIRED = "All credential are required";
 
     public void checkUser(RegisterRequestUserDTO user) {
         checkEmail(user.getEmail());
@@ -40,8 +41,7 @@ public class ValidationUtil {
         }
     }
 
-        public void checkUser(UserEditRequestDTO user){
-        checkForNullCredential(user);
+    public void checkUser(UserEditRequestDTO user){
         checkEmail(user.getEmail());
         checkFirstName(user.getFirstName());
         checkLastName(user.getLastName());
@@ -53,17 +53,6 @@ public class ValidationUtil {
             if (user.getAddress() != null) {
                 checkAddress(user.getAddress());
             }
-    }
-
-    private void checkForNullCredential(UserEditRequestDTO user){
-        if (user.getLastName() == null ||
-            user.getFirstName() == null ||
-            user.getEmail() == null ||
-            user.getOldPassword() == null ||
-            user.getNewPassword() == null ||
-            user.getConfirmNewPassword() == null){
-            throw new BadRequestException(ALL_CREDENTIAL_ARE_REQUIRED);
-        }
     }
 
     private void checkAddress(String address) {

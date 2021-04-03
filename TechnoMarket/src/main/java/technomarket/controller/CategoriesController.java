@@ -11,6 +11,7 @@ import technomarket.model.pojo.User;
 import technomarket.service.CategoryService;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class CategoriesController extends Controller{
     private CategoryService service;
 
     @PutMapping("/categories")
-    public ResponseCategoryDTO createCategory(@RequestBody RequestCategoryDTO categoryDTO, HttpSession session){
+    public ResponseCategoryDTO createCategory(@Valid @RequestBody RequestCategoryDTO categoryDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
@@ -37,7 +38,7 @@ public class CategoriesController extends Controller{
     }
 
     @PostMapping("/categories/{id}")
-    public ResponseCategoryDTO editCategory(@PathVariable int id, @RequestBody RequestCategoryDTO categoryDTO, HttpSession session){
+    public ResponseCategoryDTO editCategory(@PathVariable int id,@Valid @RequestBody RequestCategoryDTO categoryDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");

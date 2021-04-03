@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.exeptions.AuthenticationException;
 import technomarket.model.dto.requestDTO.*;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.EditProductDTO;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.ProductDTO;
 import technomarket.model.dto.responseDTO.MessageDTO;
 import technomarket.model.dto.responseDTO.ResponseProductDTO;
 import technomarket.model.pojo.Product;
@@ -11,6 +13,7 @@ import technomarket.model.pojo.User;
 import technomarket.service.ProductService;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,7 +29,7 @@ public class ProductsController extends Controller{
     }
 
     @PutMapping("/add/products")
-    public ResponseProductDTO addProduct(@RequestBody ProductDTO productDTO, HttpSession session){
+    public ResponseProductDTO addProduct(@Valid @RequestBody ProductDTO productDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
@@ -46,7 +49,7 @@ public class ProductsController extends Controller{
     }
 
     @PostMapping("/products/{id}")
-    public ResponseProductDTO editProduct(@PathVariable int id, @RequestBody EditProductDTO editProductDTO, HttpSession session){
+    public ResponseProductDTO editProduct(@PathVariable int id,@Valid @RequestBody EditProductDTO editProductDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
@@ -65,7 +68,7 @@ public class ProductsController extends Controller{
     }
 
     @PostMapping("/products")
-    public List<ResponseProductDTO> searchByName(@RequestBody SearchStringDTO searchStringDTO){
+    public List<ResponseProductDTO> searchByName(@Valid @RequestBody SearchStringDTO searchStringDTO){
         return productService.searchByName(searchStringDTO);
     }
 

@@ -2,9 +2,7 @@ package technomarket.model.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import technomarket.model.dto.requestDTO.AttributeDTO;
 import technomarket.model.dto.requestDTO.FilterDTO;
-import technomarket.model.dto.responseDTO.ResponseProductDTO;
 import technomarket.utill.DBConnector;
 
 import java.sql.PreparedStatement;

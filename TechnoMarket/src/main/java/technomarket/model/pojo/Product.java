@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import technomarket.model.dto.requestDTO.ProductDTO;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.ProductDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -72,5 +72,6 @@ public class Product {
         this.likers = new ArrayList<>();
         this.dislikers = new ArrayList<>();
         this.comments = new ArrayList<>();
+        this.images = new ArrayList<>();
     }
 }

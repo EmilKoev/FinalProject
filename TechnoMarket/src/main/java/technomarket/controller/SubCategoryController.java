@@ -11,6 +11,7 @@ import technomarket.model.pojo.User;
 import technomarket.service.SubCategoryService;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @RestController
 public class SubCategoryController extends Controller{
@@ -19,7 +20,7 @@ public class SubCategoryController extends Controller{
     private SubCategoryService service;
 
     @PutMapping("/sub_categories")
-    public ResponseSubCategoryDTO createSubCategory(@RequestBody RequestSubCategoryDTO subCategoryDTO, HttpSession session){
+    public ResponseSubCategoryDTO createSubCategory(@Valid @RequestBody RequestSubCategoryDTO subCategoryDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");
@@ -35,7 +36,7 @@ public class SubCategoryController extends Controller{
     }
 
     @PostMapping("/sub_categories/{id}")
-    public ResponseSubCategoryDTO editSubCategory(@PathVariable int id, @RequestBody RequestSubCategoryDTO requestSubCategoryDTO, HttpSession session){
+    public ResponseSubCategoryDTO editSubCategory(@PathVariable int id,@Valid @RequestBody RequestSubCategoryDTO requestSubCategoryDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw  new AuthenticationException("Only admins can do this!");

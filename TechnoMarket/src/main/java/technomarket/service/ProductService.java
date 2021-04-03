@@ -8,6 +8,9 @@ import technomarket.exeptions.NotFoundException;
 import technomarket.model.dao.ProductDao;
 import technomarket.model.dto.requestDTO.*;
 
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.AttributeDTO;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.EditProductDTO;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.ProductDTO;
 import technomarket.model.dto.responseDTO.ResponseProductDTO;
 import technomarket.model.pojo.*;
 import technomarket.model.repository.ProductRepository;

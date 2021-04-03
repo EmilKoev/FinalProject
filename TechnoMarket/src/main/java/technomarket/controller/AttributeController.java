@@ -3,14 +3,16 @@ package technomarket.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.exeptions.AuthenticationException;
-import technomarket.model.dto.requestDTO.AttributeDTO;
-import technomarket.model.dto.requestDTO.EditAttributeDTO;
+import technomarket.exeptions.BadRequestException;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.AttributeDTO;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.EditAttributeDTO;
 import technomarket.model.dto.responseDTO.MessageDTO;
 import technomarket.model.pojo.ProductAttribute;
 import technomarket.model.pojo.User;
 import technomarket.service.AttributeService;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @RestController
 public class AttributeController extends Controller{
@@ -29,12 +31,15 @@ public class AttributeController extends Controller{
 
     @GetMapping("/attributes/{name}/{productId}")
     public ProductAttribute getAttribute(@PathVariable String name, @PathVariable int productId){
+        if (name == null){
+            throw new BadRequestException("name cannot be null");
+        }
         return service.getAttribute(name, productId);
     }
 
     @PostMapping("/attributes/{productId}")
     public ProductAttribute editAttribute(@PathVariable int productId
-                                        , @RequestBody EditAttributeDTO editAttributeDTO
+                                        ,@Valid @RequestBody EditAttributeDTO editAttributeDTO
                                         , HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
@@ -48,6 +53,9 @@ public class AttributeController extends Controller{
         User user = sessionManager.getLoggedUser(session);
         if (!user.isAdmin()){
             throw new AuthenticationException("Only admins can do this!");
+        }
+        if (name == null){
+            throw new BadRequestException("name cannot be null");
         }
         service.delete(name, productId);
         return new MessageDTO("Delete attribute successful");

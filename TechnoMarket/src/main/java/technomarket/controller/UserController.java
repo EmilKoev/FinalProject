@@ -16,6 +16,7 @@ import technomarket.service.UserService;
 import technomarket.utill.ValidationUtil;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @RestController
 public class UserController extends Controller {
@@ -25,8 +26,9 @@ public class UserController extends Controller {
     @Autowired
     private ProductService productService;
 
+    //TODO validation with annotation
     @PutMapping("/user/register")
-    public UserWithoutPassDTO register(@RequestBody RegisterRequestUserDTO userDTO, HttpSession session){
+    public UserWithoutPassDTO register(@Valid @RequestBody RegisterRequestUserDTO userDTO, HttpSession session){
         if(sessionManager.isSomeoneLoggedIn(session)){
             throw new BadRequestException("You have to log out first!");
         }
@@ -40,7 +42,7 @@ public class UserController extends Controller {
     }
 
     @PostMapping("/user/login")
-    public UserWithoutPassDTO login(@RequestBody LoginDTO loginDTO, HttpSession session){
+    public UserWithoutPassDTO login(@Valid @RequestBody LoginDTO loginDTO, HttpSession session){
         if (sessionManager.isSomeoneLoggedIn(session)){
             throw new BadRequestException("You are already logged in!");
         }
@@ -58,13 +60,13 @@ public class UserController extends Controller {
     }
 
     @PutMapping("/user/edit")
-    public UserWithoutPassDTO edit(@RequestBody UserEditRequestDTO requestDto, HttpSession session){
+    public UserWithoutPassDTO edit(@Valid @RequestBody UserEditRequestDTO requestDto, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         return userService.edit(requestDto,user);
     }
 
     @DeleteMapping("/user")
-    public void delete(@RequestBody PasswordDTO password , HttpSession session){
+    public void delete(@Valid @RequestBody PasswordDTO password , HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         sessionManager.logoutUser(session);
         userService.delete(password ,user);
