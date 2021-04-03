@@ -24,9 +24,7 @@ public class CategoriesController extends Controller{
     @PutMapping("/categories")
     public ResponseCategoryDTO createCategory(@Valid @RequestBody RequestCategoryDTO categoryDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw  new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         Category category = service.addCategory(categoryDTO);
         return new ResponseCategoryDTO(category);
     }
@@ -40,9 +38,7 @@ public class CategoriesController extends Controller{
     @PostMapping("/categories/{id}")
     public ResponseCategoryDTO editCategory(@PathVariable int id,@Valid @RequestBody RequestCategoryDTO categoryDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw  new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         Category category = service.edit(id, categoryDTO);
         return new ResponseCategoryDTO(category);
     }
@@ -50,9 +46,7 @@ public class CategoriesController extends Controller{
     @DeleteMapping("/categories/{id}")
     public MessageDTO deleteCategory(@PathVariable int id, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw  new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         service.delete(id);
         return new MessageDTO("Delete category successful!");
     }

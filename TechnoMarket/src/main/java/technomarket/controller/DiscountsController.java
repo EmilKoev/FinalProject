@@ -22,9 +22,7 @@ public class DiscountsController extends Controller{
     @PutMapping("/discounts")
     public Discount addDiscount(@Valid @RequestBody DiscountDTO discountDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw  new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         return discountService.addDiscount(discountDTO);
     }
 
@@ -36,18 +34,14 @@ public class DiscountsController extends Controller{
     @PostMapping("/discounts/{id}")
     public Discount editDiscount(@PathVariable int id, @RequestBody DiscountDTO discountDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw  new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         return discountService.edit(discountDTO, id);
     }
 
     @DeleteMapping("/discounts/{id}")
     public MessageDTO deleteDiscount(@PathVariable int id, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw  new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         discountService.deleteDiscount(id);
         return new MessageDTO("Delete discount successful");
     }

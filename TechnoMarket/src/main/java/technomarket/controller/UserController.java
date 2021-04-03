@@ -13,7 +13,6 @@ import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
 import technomarket.service.ProductService;
 import technomarket.service.UserService;
-import technomarket.utill.ValidationUtil;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -26,7 +25,6 @@ public class UserController extends Controller {
     @Autowired
     private ProductService productService;
 
-    //TODO validation with annotation
     @PutMapping("/user/register")
     public UserWithoutPassDTO register(@Valid @RequestBody RegisterRequestUserDTO userDTO, HttpSession session){
         if(sessionManager.isSomeoneLoggedIn(session)){

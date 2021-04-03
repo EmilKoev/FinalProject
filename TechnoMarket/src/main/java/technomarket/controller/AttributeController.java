@@ -23,9 +23,7 @@ public class AttributeController extends Controller{
     @PutMapping("/attributes/{productId}")
     public ProductAttribute addAttribute(@RequestBody AttributeDTO attributeDTO, @PathVariable int productId, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         return service.addAttribute(attributeDTO, productId);
     }
 
@@ -42,18 +40,14 @@ public class AttributeController extends Controller{
                                         ,@Valid @RequestBody EditAttributeDTO editAttributeDTO
                                         , HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         return service.edit(editAttributeDTO, productId);
     }
 
     @DeleteMapping("/attributes/{name}/{productId}")
     public MessageDTO deleteAttribute(@PathVariable String name, @PathVariable int productId, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         if (name == null){
             throw new BadRequestException("name cannot be null");
         }

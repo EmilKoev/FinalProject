@@ -36,10 +36,8 @@ public class UserService {
         }
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         userDTO.setPassword(encoder.encode(userDTO.getPassword()));
-
         User user = new User(userDTO);
         Order order = new Order();
-
         order = orderRepository.save(order);
         user.setOrder(order);
         user = userRepository.save(user);

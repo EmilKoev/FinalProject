@@ -29,7 +29,6 @@ public class UserEditRequestDTO {
     @NotEmpty(message = "Address cannot be empty or null!")
     @Size(min = 6, message = "Address must be at least 6 symbols")
     private String address;
-    @NotEmpty(message = "Phone cannot be empty or null!")
     private String phone;
     private boolean isSubscribed = true;
 

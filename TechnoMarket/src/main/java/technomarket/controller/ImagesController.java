@@ -25,9 +25,6 @@ import java.util.List;
 @RestController
 public class ImagesController extends Controller{
 
-    @Value("${file.path}")
-    private String filePath;
-
     @Autowired
     ProductImageService productImageService;
 
@@ -49,9 +46,7 @@ public class ImagesController extends Controller{
                                       @PathVariable int productId,
                                           HttpSession session) {
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw  new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         return productImageService.multiUpload(files, productId);
     }
 
@@ -60,9 +55,7 @@ public class ImagesController extends Controller{
                                                   @PathVariable int productId,
                                                   HttpSession session) {
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw  new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         return productImageService.upload(file, productId);
     }
 

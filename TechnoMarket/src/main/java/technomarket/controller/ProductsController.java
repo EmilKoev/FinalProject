@@ -31,9 +31,7 @@ public class ProductsController extends Controller{
     @PutMapping("/add/products")
     public ResponseProductDTO addProduct(@Valid @RequestBody ProductDTO productDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw  new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         Product product = productService.addProduct(productDTO);
         return new ResponseProductDTO(product);
     }
@@ -41,9 +39,7 @@ public class ProductsController extends Controller{
     @DeleteMapping("/products/{id}")
     public MessageDTO deleteProduct(@PathVariable int id, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw  new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         productService.delete(id);
         return new MessageDTO("Delete product successful");
     }
@@ -51,9 +47,7 @@ public class ProductsController extends Controller{
     @PostMapping("/products/{id}")
     public ResponseProductDTO editProduct(@PathVariable int id,@Valid @RequestBody EditProductDTO editProductDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw  new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         Product product = productService.edit(id, editProductDTO);
         return new ResponseProductDTO(product);
     }

@@ -10,7 +10,9 @@ import technomarket.exeptions.AuthenticationException;
 import technomarket.exeptions.BadRequestException;
 import technomarket.exeptions.NotFoundException;
 import technomarket.model.dto.responseDTO.ErrorDTO;
+import technomarket.model.pojo.User;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +51,12 @@ public abstract class Controller {
             errors.put(fieldName, errorMessage);
         });
         return errors;
+    }
+
+    public void adminProtection(User user){
+        if (!user.isAdmin()){
+            throw new AuthenticationException("Only admins can do this!");
+        }
     }
 
 }

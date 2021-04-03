@@ -22,9 +22,7 @@ public class SubCategoryController extends Controller{
     @PutMapping("/sub_categories")
     public ResponseSubCategoryDTO createSubCategory(@Valid @RequestBody RequestSubCategoryDTO subCategoryDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw  new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         SubCategory subCategory = service.addSubCategory(subCategoryDTO);
         return new ResponseSubCategoryDTO(subCategory);
     }
@@ -38,9 +36,7 @@ public class SubCategoryController extends Controller{
     @PostMapping("/sub_categories/{id}")
     public ResponseSubCategoryDTO editSubCategory(@PathVariable int id,@Valid @RequestBody RequestSubCategoryDTO requestSubCategoryDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw  new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         SubCategory subCategory = service.edit(id, requestSubCategoryDTO);
         return new ResponseSubCategoryDTO(subCategory);
     }
@@ -48,9 +44,7 @@ public class SubCategoryController extends Controller{
     @DeleteMapping("/sub_categories/{id}")
     public MessageDTO deleteSubCategory(@PathVariable int id, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        if (!user.isAdmin()){
-            throw  new AuthenticationException("Only admins can do this!");
-        }
+        adminProtection(user);
         service.delete(id);
         return new MessageDTO("Delete sub category successful");
     }
