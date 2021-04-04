@@ -6,12 +6,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import technomarket.exeptions.AuthenticationException;
 import technomarket.exeptions.BadRequestException;
-import technomarket.model.dto.requestDTO.userDTO.LoginDTO;
-import technomarket.model.dto.requestDTO.PasswordDTO;
-import technomarket.model.dto.requestDTO.userDTO.RegisterRequestUserDTO;
+import technomarket.model.dto.requestDTO.userDTO.LoginRequestDTO;
+import technomarket.model.dto.requestDTO.PasswordRequestDTO;
+import technomarket.model.dto.requestDTO.userDTO.UserRegisterRequestDTO;
 import technomarket.model.dto.requestDTO.userDTO.UserEditRequestDTO;
 import technomarket.model.dto.responseDTO.OrderResponseDTO;
-import technomarket.model.dto.responseDTO.UserWithoutPassDTO;
+import technomarket.model.dto.responseDTO.UserWithoutPassResponseDTO;
 import technomarket.model.pojo.Order;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
@@ -29,7 +29,7 @@ public class UserService {
     @Autowired
     private ValidationUtil validationUtil;
 
-    public UserWithoutPassDTO addUser(RegisterRequestUserDTO userDTO){
+    public UserWithoutPassResponseDTO addUser(UserRegisterRequestDTO userDTO){
         validationUtil.checkUser(userDTO);
         if(userRepository.findByEmail(userDTO.getEmail()) != null){
             throw new BadRequestException("Email already exists");
@@ -45,10 +45,10 @@ public class UserService {
         order.setAddress(user.getAddress());
         orderRepository.save(order);
 
-        return new UserWithoutPassDTO(user);
+        return new UserWithoutPassResponseDTO(user);
     }
 
-    public UserWithoutPassDTO login(LoginDTO loginDTO) {
+    public UserWithoutPassResponseDTO login(LoginRequestDTO loginDTO) {
         User user = userRepository.findByEmail(loginDTO.getEmail());
         if (user == null){
             throw new AuthenticationException("Wrong credentials");
@@ -57,12 +57,12 @@ public class UserService {
             if (!encoder.matches(loginDTO.getPassword(), user.getPassword())){
                 throw  new AuthenticationException("Wrong credentials");
             }else {
-                return new UserWithoutPassDTO(user);
+                return new UserWithoutPassResponseDTO(user);
             }
         }
     }
 
-    public UserWithoutPassDTO edit(UserEditRequestDTO requestDto, User user) {
+    public UserWithoutPassResponseDTO edit(UserEditRequestDTO requestDto, User user) {
         validationUtil.checkUser(requestDto);
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!encoder.matches(requestDto.getOldPassword(),user.getPassword())){
@@ -83,11 +83,11 @@ public class UserService {
             user.setPhone(requestDto.getPhone());
             user.setSubscribed(requestDto.isSubscribed());
             userRepository.save(user);
-            return new  UserWithoutPassDTO(user);
+            return new UserWithoutPassResponseDTO(user);
         }
     }
 
-    public void delete(PasswordDTO passwordDTO, User user) {
+    public void delete(PasswordRequestDTO passwordDTO, User user) {
 
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         if (encoder.matches(passwordDTO.getPassword(),user.getPassword())) {

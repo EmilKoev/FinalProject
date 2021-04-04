@@ -93,19 +93,5 @@ public class ProductImageService {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
-//
-//    public ProductImage upload(MultipartFile[] file, int productId) throws IOException {
-//        Product product = productService.getById(productId);
-//        File pFile = new File(filePath + File.separator + productId + "_" + System.nanoTime() + ".png");
-//        try (OutputStream stream = new FileOutputStream(pFile)){
-//            stream.write(file.getBytes());
-//            ProductImage productImage = new ProductImage();
-//            productImage.setUrl(pFile.getAbsolutePath());
-//            productImage.setProduct(product);
-//            return repository.save(productImage);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//            throw new NotFoundException("file not found!");
-//        }
-//    }
+
 }

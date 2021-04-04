@@ -2,9 +2,8 @@ package technomarket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import technomarket.exeptions.AuthenticationException;
-import technomarket.model.dto.requestDTO.DiscountDTO;
-import technomarket.model.dto.responseDTO.MessageDTO;
+import technomarket.model.dto.requestDTO.DiscountRequestDTO;
+import technomarket.model.dto.responseDTO.MessageResponseDTO;
 import technomarket.model.pojo.Discount;
 import technomarket.model.pojo.User;
 import technomarket.service.DiscountService;
@@ -20,7 +19,7 @@ public class DiscountsController extends Controller{
     private DiscountService discountService;
 
     @PutMapping("/discounts")
-    public Discount addDiscount(@Valid @RequestBody DiscountDTO discountDTO, HttpSession session){
+    public Discount addDiscount(@Valid @RequestBody DiscountRequestDTO discountDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         adminProtection(user);
         return discountService.addDiscount(discountDTO);
@@ -32,18 +31,18 @@ public class DiscountsController extends Controller{
     }
 
     @PostMapping("/discounts/{id}")
-    public Discount editDiscount(@PathVariable int id, @RequestBody DiscountDTO discountDTO, HttpSession session){
+    public Discount editDiscount(@PathVariable int id, @RequestBody DiscountRequestDTO discountDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         adminProtection(user);
         return discountService.edit(discountDTO, id);
     }
 
     @DeleteMapping("/discounts/{id}")
-    public MessageDTO deleteDiscount(@PathVariable int id, HttpSession session){
+    public MessageResponseDTO deleteDiscount(@PathVariable int id, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         adminProtection(user);
         discountService.deleteDiscount(id);
-        return new MessageDTO("Delete discount successful");
+        return new MessageResponseDTO("Delete discount successful");
     }
 
     @GetMapping("/discounts")

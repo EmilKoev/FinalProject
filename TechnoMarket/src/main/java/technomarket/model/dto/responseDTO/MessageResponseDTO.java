@@ -1,18 +1,17 @@
 package technomarket.model.dto.responseDTO;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-@AllArgsConstructor
+@Component
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
-@Component
-public class ErrorDTO {
+public class MessageResponseDTO {
 
     private String message;
 

@@ -11,7 +11,7 @@ import technomarket.model.pojo.User;
 @Getter
 @Setter
 @Component
-public class UserWithoutPassDTO {
+public class UserWithoutPassResponseDTO {
 
     private int id;
     private String name;
@@ -24,7 +24,7 @@ public class UserWithoutPassDTO {
     private int countOfProductsInCart;
     private double totalPriceOfAllProductsInCart;
 
-    public UserWithoutPassDTO(User user){
+    public UserWithoutPassResponseDTO(User user){
         id = user.getId();
         name = user.getFirstName();
         lastName = user.getLastName();

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import technomarket.model.dto.requestDTO.RequestCategoryDTO;
+import technomarket.model.dto.requestDTO.CategoryRequestDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class Category {
     @JsonBackReference
     private List<SubCategory> subCategories;
 
-    public Category(RequestCategoryDTO categoryDTO){
+    public Category(CategoryRequestDTO categoryDTO){
         this.name = categoryDTO.getName();
         this.subCategories = new ArrayList<>();
     }

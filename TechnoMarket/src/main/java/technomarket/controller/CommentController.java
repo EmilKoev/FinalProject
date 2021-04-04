@@ -2,8 +2,8 @@ package technomarket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import technomarket.model.dto.requestDTO.CommentDTO;
-import technomarket.model.dto.requestDTO.ReactDTO;
+import technomarket.model.dto.requestDTO.CommentRequestDTO;
+import technomarket.model.dto.requestDTO.ReactRequestDTO;
 import technomarket.model.dto.responseDTO.CommentResponseDTO;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
@@ -31,14 +31,14 @@ public class CommentController extends Controller{
     }
 
     @PostMapping("/comments/{id}")
-    public CommentResponseDTO addComment(@PathVariable(name = "id") int product_id, @Valid @RequestBody CommentDTO comment, HttpSession session) {
+    public CommentResponseDTO addComment(@PathVariable(name = "id") int product_id, @Valid @RequestBody CommentRequestDTO comment, HttpSession session) {
         User user = sessionManager.getLoggedUser(session);
         Product product = productService.getById(product_id);
         return commentService.addComment(product,user,comment.getComment());
     }
 
     @PutMapping("/comments/{id}")
-    public CommentResponseDTO editComment(@PathVariable(name = "id") int comment_id,@Valid @RequestBody CommentDTO commentDTO,HttpSession session){
+    public CommentResponseDTO editComment(@PathVariable(name = "id") int comment_id, @Valid @RequestBody CommentRequestDTO commentDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         return commentService.edit(comment_id,user,commentDTO.getComment());
     }
@@ -50,7 +50,7 @@ public class CommentController extends Controller{
     }
 
     @PostMapping("comments/react/{comment_id}")
-    public void reactComment(HttpSession session, @PathVariable int comment_id, @RequestBody ReactDTO reactDTO){
+    public void reactComment(HttpSession session, @PathVariable int comment_id, @RequestBody ReactRequestDTO reactDTO){
         commentService.react(reactDTO,sessionManager.getLoggedUser(session), comment_id);
     }
 }

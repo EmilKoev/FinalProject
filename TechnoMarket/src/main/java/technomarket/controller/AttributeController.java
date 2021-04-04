@@ -2,11 +2,10 @@ package technomarket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import technomarket.exeptions.AuthenticationException;
 import technomarket.exeptions.BadRequestException;
-import technomarket.model.dto.requestDTO.productAndAttributeDTO.AttributeDTO;
-import technomarket.model.dto.requestDTO.productAndAttributeDTO.EditAttributeDTO;
-import technomarket.model.dto.responseDTO.MessageDTO;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.AttributeRequestDTO;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.EditAttributeRequestDTO;
+import technomarket.model.dto.responseDTO.MessageResponseDTO;
 import technomarket.model.pojo.ProductAttribute;
 import technomarket.model.pojo.User;
 import technomarket.service.AttributeService;
@@ -21,7 +20,7 @@ public class AttributeController extends Controller{
     private AttributeService service;
 
     @PutMapping("/attributes/{productId}")
-    public ProductAttribute addAttribute(@RequestBody AttributeDTO attributeDTO, @PathVariable int productId, HttpSession session){
+    public ProductAttribute addAttribute(@RequestBody AttributeRequestDTO attributeDTO, @PathVariable int productId, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         adminProtection(user);
         return service.addAttribute(attributeDTO, productId);
@@ -37,7 +36,7 @@ public class AttributeController extends Controller{
 
     @PostMapping("/attributes/{productId}")
     public ProductAttribute editAttribute(@PathVariable int productId
-                                        ,@Valid @RequestBody EditAttributeDTO editAttributeDTO
+                                        ,@Valid @RequestBody EditAttributeRequestDTO editAttributeDTO
                                         , HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         adminProtection(user);
@@ -45,14 +44,14 @@ public class AttributeController extends Controller{
     }
 
     @DeleteMapping("/attributes/{name}/{productId}")
-    public MessageDTO deleteAttribute(@PathVariable String name, @PathVariable int productId, HttpSession session){
+    public MessageResponseDTO deleteAttribute(@PathVariable String name, @PathVariable int productId, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         adminProtection(user);
         if (name == null){
             throw new BadRequestException("name cannot be null");
         }
         service.delete(name, productId);
-        return new MessageDTO("Delete attribute successful");
+        return new MessageResponseDTO("Delete attribute successful");
     }
 
 

@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.catalina.LifecycleState;
-import technomarket.model.dto.requestDTO.DiscountDTO;
+import technomarket.model.dto.requestDTO.DiscountRequestDTO;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -37,7 +36,7 @@ public class Discount {
     @JsonBackReference
     private List<Product> productList;
 
-    public Discount(DiscountDTO discountDTO){
+    public Discount(DiscountRequestDTO discountDTO){
         this.title = discountDTO.getTitle();
         this.discountPercent = discountDTO.getDiscountPercent();
         this.startAt = discountDTO.getStartAt();

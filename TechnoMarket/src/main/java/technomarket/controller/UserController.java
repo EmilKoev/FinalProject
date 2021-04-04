@@ -3,12 +3,12 @@ package technomarket.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.exeptions.BadRequestException;
-import technomarket.model.dto.requestDTO.userDTO.LoginDTO;
-import technomarket.model.dto.requestDTO.PasswordDTO;
-import technomarket.model.dto.requestDTO.userDTO.RegisterRequestUserDTO;
+import technomarket.model.dto.requestDTO.userDTO.LoginRequestDTO;
+import technomarket.model.dto.requestDTO.PasswordRequestDTO;
+import technomarket.model.dto.requestDTO.userDTO.UserRegisterRequestDTO;
 import technomarket.model.dto.requestDTO.userDTO.UserEditRequestDTO;
 import technomarket.model.dto.responseDTO.OrderResponseDTO;
-import technomarket.model.dto.responseDTO.UserWithoutPassDTO;
+import technomarket.model.dto.responseDTO.UserWithoutPassResponseDTO;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
 import technomarket.service.ProductService;
@@ -26,7 +26,7 @@ public class UserController extends Controller {
     private ProductService productService;
 
     @PutMapping("/user/register")
-    public UserWithoutPassDTO register(@Valid @RequestBody RegisterRequestUserDTO userDTO, HttpSession session){
+    public UserWithoutPassResponseDTO register(@Valid @RequestBody UserRegisterRequestDTO userDTO, HttpSession session){
         if(sessionManager.isSomeoneLoggedIn(session)){
             throw new BadRequestException("You have to log out first!");
         }
@@ -34,17 +34,17 @@ public class UserController extends Controller {
     }
 
     @GetMapping("/user")
-    public UserWithoutPassDTO userInfo(HttpSession session){
+    public UserWithoutPassResponseDTO userInfo(HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        return new UserWithoutPassDTO(user);
+        return new UserWithoutPassResponseDTO(user);
     }
 
     @PostMapping("/user/login")
-    public UserWithoutPassDTO login(@Valid @RequestBody LoginDTO loginDTO, HttpSession session){
+    public UserWithoutPassResponseDTO login(@Valid @RequestBody LoginRequestDTO loginDTO, HttpSession session){
         if (sessionManager.isSomeoneLoggedIn(session)){
             throw new BadRequestException("You are already logged in!");
         }
-        UserWithoutPassDTO user = userService.login(loginDTO);
+        UserWithoutPassResponseDTO user = userService.login(loginDTO);
         sessionManager.loginUser(session,user.getId());
         return user;
     }
@@ -58,13 +58,13 @@ public class UserController extends Controller {
     }
 
     @PutMapping("/user/edit")
-    public UserWithoutPassDTO edit(@Valid @RequestBody UserEditRequestDTO requestDto, HttpSession session){
+    public UserWithoutPassResponseDTO edit(@Valid @RequestBody UserEditRequestDTO requestDto, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         return userService.edit(requestDto,user);
     }
 
     @DeleteMapping("/user")
-    public void delete(@Valid @RequestBody PasswordDTO password , HttpSession session){
+    public void delete(@Valid @RequestBody PasswordRequestDTO password , HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         sessionManager.logoutUser(session);
         userService.delete(password ,user);

@@ -2,12 +2,11 @@ package technomarket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import technomarket.exeptions.AuthenticationException;
 import technomarket.model.dto.requestDTO.*;
-import technomarket.model.dto.requestDTO.productAndAttributeDTO.EditProductDTO;
-import technomarket.model.dto.requestDTO.productAndAttributeDTO.ProductDTO;
-import technomarket.model.dto.responseDTO.MessageDTO;
-import technomarket.model.dto.responseDTO.ResponseProductDTO;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.EditProductRequestDTO;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.ProductRequestDTO;
+import technomarket.model.dto.responseDTO.MessageResponseDTO;
+import technomarket.model.dto.responseDTO.ProductResponseDTO;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
 import technomarket.service.ProductService;
@@ -23,51 +22,51 @@ public class ProductsController extends Controller{
     private ProductService productService;
 
     @GetMapping("/products/{id}")
-    public ResponseProductDTO getById(@PathVariable int id){
+    public ProductResponseDTO getById(@PathVariable int id){
         Product product = productService.getById(id);
-        return new ResponseProductDTO(product);
+        return new ProductResponseDTO(product);
     }
 
     @PutMapping("/add/products")
-    public ResponseProductDTO addProduct(@Valid @RequestBody ProductDTO productDTO, HttpSession session){
+    public ProductResponseDTO addProduct(@Valid @RequestBody ProductRequestDTO productDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         adminProtection(user);
         Product product = productService.addProduct(productDTO);
-        return new ResponseProductDTO(product);
+        return new ProductResponseDTO(product);
     }
 
     @DeleteMapping("/products/{id}")
-    public MessageDTO deleteProduct(@PathVariable int id, HttpSession session){
+    public MessageResponseDTO deleteProduct(@PathVariable int id, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         adminProtection(user);
         productService.delete(id);
-        return new MessageDTO("Delete product successful");
+        return new MessageResponseDTO("Delete product successful");
     }
 
     @PostMapping("/products/{id}")
-    public ResponseProductDTO editProduct(@PathVariable int id,@Valid @RequestBody EditProductDTO editProductDTO, HttpSession session){
+    public ProductResponseDTO editProduct(@PathVariable int id, @Valid @RequestBody EditProductRequestDTO editProductDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         adminProtection(user);
         Product product = productService.edit(id, editProductDTO);
-        return new ResponseProductDTO(product);
+        return new ProductResponseDTO(product);
     }
 
     @PostMapping("/products/react/{productId}")
-    public ResponseProductDTO reactProduct(@RequestBody ReactDTO reactDTO,
+    public ProductResponseDTO reactProduct(@RequestBody ReactRequestDTO reactDTO,
                                            @PathVariable int productId,
                                            HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         Product product = productService.react(reactDTO, productId, user);
-        return new ResponseProductDTO(product);
+        return new ProductResponseDTO(product);
     }
 
     @PostMapping("/products")
-    public List<ResponseProductDTO> searchByName(@Valid @RequestBody SearchStringDTO searchStringDTO){
+    public List<ProductResponseDTO> searchByName(@Valid @RequestBody SearchByStringRequestDTO searchStringDTO){
         return productService.searchByName(searchStringDTO);
     }
 
     @PostMapping("/products/search")
-    public List<ResponseProductDTO> searchByAttributes(@RequestBody FilterDTO filterDTO){
+    public List<ProductResponseDTO> searchByAttributes(@RequestBody FilterRequestDTO filterDTO){
         return productService.searchByAttributes(filterDTO);
     }
 }

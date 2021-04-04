@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import technomarket.model.dto.requestDTO.productAndAttributeDTO.AttributeDTO;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.AttributeRequestDTO;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,7 +26,7 @@ public class ProductAttribute implements Serializable {
     @JsonBackReference
     private Product productId;
 
-    public ProductAttribute(AttributeDTO attributeDTO, Product product){
+    public ProductAttribute(AttributeRequestDTO attributeDTO, Product product){
         this.name = attributeDTO.getName();
         this.value = attributeDTO.getValue();
         this.productId = product;

@@ -6,14 +6,14 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
-@Setter
 @Getter
-@Component
+@Setter
 @NoArgsConstructor
-public class CommentDTO {
+@Component
+public class PasswordRequestDTO {
 
-    @NotEmpty(message = "Comment cannot be null ot empty")
-    private String comment;
-
+    @NotEmpty(message = "Password cannot be empty or null!")
+    private String password;
 }

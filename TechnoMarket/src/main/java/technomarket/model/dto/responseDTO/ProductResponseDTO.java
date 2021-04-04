@@ -18,7 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ResponseProductDTO {
+public class ProductResponseDTO {
 
     private int id;
     private String name;
@@ -33,7 +33,7 @@ public class ResponseProductDTO {
     private int likes;
     private int dislikes;
 
-    public ResponseProductDTO(Product product){
+    public ProductResponseDTO(Product product){
         this.id = product.getId();
         this.name = product.getName();
         this.brand = product.getBrand();

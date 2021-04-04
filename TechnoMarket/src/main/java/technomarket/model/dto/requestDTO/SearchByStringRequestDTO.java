@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @Component
-public class SearchStringDTO {
+public class SearchByStringRequestDTO {
 
     @NotNull(message = "Search cannot be null")
     private String search;

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import technomarket.exeptions.AuthenticationException;
 import technomarket.exeptions.BadRequestException;
 import technomarket.exeptions.NotFoundException;
-import technomarket.model.dto.requestDTO.ReactDTO;
+import technomarket.model.dto.requestDTO.ReactRequestDTO;
 import technomarket.model.dto.responseDTO.CommentResponseDTO;
 import technomarket.model.pojo.Comment;
 import technomarket.model.pojo.Product;
@@ -64,7 +64,7 @@ public class CommentService {
         commentsRepository.delete(commentsRepository.getById(comment_id));
     }
 
-    public void react(ReactDTO reactDTO, User user, int comment_id) {
+    public void react(ReactRequestDTO reactDTO, User user, int comment_id) {
         if (commentsRepository.getById(comment_id) == null){
             throw new NotFoundException("comment not found");
         }

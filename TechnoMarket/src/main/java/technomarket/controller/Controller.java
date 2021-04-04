@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import technomarket.exeptions.AuthenticationException;
 import technomarket.exeptions.BadRequestException;
 import technomarket.exeptions.NotFoundException;
-import technomarket.model.dto.responseDTO.ErrorDTO;
+import technomarket.model.dto.responseDTO.ErrorResponseDTO;
 import technomarket.model.pojo.User;
 
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,20 +23,20 @@ public abstract class Controller {
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorDTO handleNotFound(NotFoundException e){
-        return new ErrorDTO(e.getMessage());
+    public ErrorResponseDTO handleNotFound(NotFoundException e){
+        return new ErrorResponseDTO(e.getMessage());
     }
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDTO handleBadRequest(BadRequestException e){
-        return new ErrorDTO(e.getMessage());
+    public ErrorResponseDTO handleBadRequest(BadRequestException e){
+        return new ErrorResponseDTO(e.getMessage());
     }
 
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorDTO handleNotAuthorized(AuthenticationException e){
-        return new ErrorDTO(e.getMessage());
+    public ErrorResponseDTO handleNotAuthorized(AuthenticationException e){
+        return new ErrorResponseDTO(e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

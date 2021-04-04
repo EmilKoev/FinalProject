@@ -2,7 +2,7 @@ package technomarket.model.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import technomarket.model.dto.requestDTO.FilterDTO;
+import technomarket.model.dto.requestDTO.FilterRequestDTO;
 import technomarket.utill.DBConnector;
 
 import java.sql.PreparedStatement;
@@ -18,7 +18,7 @@ public class ProductDao {
     private DBConnector dbConnector;
 
 
-    public List<Integer> findAllProductsByFilter(FilterDTO filterDTO) {
+    public List<Integer> findAllProductsByFilter(FilterRequestDTO filterDTO) {
         StringBuilder sql = new StringBuilder("SELECT p.id FROM technomarket.products AS p\n" +
                 "JOIN technomarket.sub_categories AS c \n" +
                 "ON p.sub_category_id = c.id\n");

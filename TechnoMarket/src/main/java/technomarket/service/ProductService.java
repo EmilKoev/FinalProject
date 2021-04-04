@@ -8,10 +8,10 @@ import technomarket.exeptions.NotFoundException;
 import technomarket.model.dao.ProductDao;
 import technomarket.model.dto.requestDTO.*;
 
-import technomarket.model.dto.requestDTO.productAndAttributeDTO.AttributeDTO;
-import technomarket.model.dto.requestDTO.productAndAttributeDTO.EditProductDTO;
-import technomarket.model.dto.requestDTO.productAndAttributeDTO.ProductDTO;
-import technomarket.model.dto.responseDTO.ResponseProductDTO;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.AttributeRequestDTO;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.EditProductRequestDTO;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.ProductRequestDTO;
+import technomarket.model.dto.responseDTO.ProductResponseDTO;
 import technomarket.model.pojo.*;
 import technomarket.model.repository.ProductRepository;
 import technomarket.model.repository.UserRepository;
@@ -47,12 +47,12 @@ public class ProductService {
     }
 
     @Transactional
-    public Product addProduct(ProductDTO productDTO) {
+    public Product addProduct(ProductRequestDTO productDTO) {
         SubCategory subCategory = subCategoryService.getSubCategory(productDTO.getSubCategoryId());
         Discount discount = discountService.getDiscount(productDTO.getDiscountId());
         Product product = new Product(productDTO, subCategory, discount);
         productRepository.save(product);
-        for (AttributeDTO attributeDTO : productDTO.getAttributeList()) {
+        for (AttributeRequestDTO attributeDTO : productDTO.getAttributeList()) {
             ProductAttribute attribute = attributeService.addAttribute(attributeDTO, product.getId());
             product.getAttributes().add(attribute);
         }
@@ -64,7 +64,7 @@ public class ProductService {
         productRepository.delete(product);
     }
 
-    public Product edit(int id, EditProductDTO editProductDTO) {
+    public Product edit(int id, EditProductRequestDTO editProductDTO) {
         SubCategory subCategory = subCategoryService.getSubCategory(editProductDTO.getSubCategoryId());
         Discount discount = discountService.getDiscount(editProductDTO.getDiscountId());
         Product product = getById(id);
@@ -78,7 +78,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Product react(ReactDTO reactDTO, int productId, User user) {
+    public Product react(ReactRequestDTO reactDTO, int productId, User user) {
         Product product = getById(productId);
         switch (reactDTO.getReact()){
             case -1:
@@ -111,22 +111,22 @@ public class ProductService {
         return product;
     }
 
-    public List<ResponseProductDTO> searchByName(SearchStringDTO searchStringDTO) {
-       List<ResponseProductDTO> products = new ArrayList<>();
+    public List<ProductResponseDTO> searchByName(SearchByStringRequestDTO searchStringDTO) {
+       List<ProductResponseDTO> products = new ArrayList<>();
         for (Product p : productRepository.findAllByNameLike("%" + searchStringDTO.getSearch() + "%")) {
-            products.add(new ResponseProductDTO(p));
+            products.add(new ProductResponseDTO(p));
         }
         return products;
     }
 
-    public List<ResponseProductDTO> searchByAttributes(FilterDTO filterDTO) {
+    public List<ProductResponseDTO> searchByAttributes(FilterRequestDTO filterDTO) {
         List<Integer> ids = productDao.findAllProductsByFilter(filterDTO);
         List<Product> firstFilter = productRepository.findAllByIdIn(ids);
-        List<ResponseProductDTO> filteredProducts = new ArrayList<>();
+        List<ProductResponseDTO> filteredProducts = new ArrayList<>();
 
             for (Product p : firstFilter) {
                 int attributesFound = 0;
-                for (AttributeDTO attribute : filterDTO.getAttributes()) {
+                for (AttributeRequestDTO attribute : filterDTO.getAttributes()) {
                     boolean findAttribute = false;
                     for (ProductAttribute a : p.getAttributes()) {
                         if (attribute.getName().equalsIgnoreCase(a.getName())){
@@ -140,7 +140,7 @@ public class ProductService {
 
                 }
                 if (attributesFound == filterDTO.getAttributes().size()){
-                    filteredProducts.add(new ResponseProductDTO(p));
+                    filteredProducts.add(new ProductResponseDTO(p));
                 }
             }
         return filteredProducts;

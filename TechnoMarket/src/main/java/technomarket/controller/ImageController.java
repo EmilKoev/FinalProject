@@ -23,7 +23,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
-public class ImagesController extends Controller{
+public class ImageController extends Controller{
 
     @Autowired
     ProductImageService productImageService;

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import technomarket.model.dto.requestDTO.productAndAttributeDTO.ProductDTO;
+import technomarket.model.dto.requestDTO.productAndAttributeDTO.ProductRequestDTO;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -62,7 +62,7 @@ public class Product {
     )
     List<User> dislikers;
 
-    public Product(ProductDTO productDTO, SubCategory subCategory, Discount discount){
+    public Product(ProductRequestDTO productDTO, SubCategory subCategory, Discount discount){
         this.name = productDTO.getName();
         this.brand = productDTO.getBrand();
         this.subCategory = subCategory;

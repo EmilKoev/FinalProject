@@ -2,10 +2,9 @@ package technomarket.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import technomarket.exeptions.BadRequestException;
 import technomarket.exeptions.NotFoundException;
-import technomarket.model.dto.requestDTO.DiscountDTO;
+import technomarket.model.dto.requestDTO.DiscountRequestDTO;
 import technomarket.model.pojo.Discount;
 import technomarket.model.repository.DiscountRepository;
 import java.time.LocalDate;
@@ -20,7 +19,7 @@ public class DiscountService {
     @Autowired
     private EmailService emailService;
 
-    public Discount addDiscount(DiscountDTO discountDTO) {
+    public Discount addDiscount(DiscountRequestDTO discountDTO) {
         LocalDate start = discountDTO.getStartAt();
         LocalDate end = discountDTO.getEndAt();
         if (end.isBefore(start)){
@@ -43,7 +42,7 @@ public class DiscountService {
         }
     }
 
-    public Discount edit(DiscountDTO requestDiscount, int id) {
+    public Discount edit(DiscountRequestDTO requestDiscount, int id) {
         Discount discount = getDiscount(id);
         LocalDate start = requestDiscount.getStartAt();
         LocalDate end = requestDiscount.getEndAt();

@@ -3,7 +3,7 @@ package technomarket.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import technomarket.exeptions.NotFoundException;
-import technomarket.model.dto.requestDTO.RequestCategoryDTO;
+import technomarket.model.dto.requestDTO.CategoryRequestDTO;
 import technomarket.model.pojo.Category;
 import technomarket.model.repository.CategoryRepository;
 
@@ -16,7 +16,7 @@ public class CategoryService {
     @Autowired
     private CategoryRepository repository;
 
-    public Category addCategory(RequestCategoryDTO categoryDTO) {
+    public Category addCategory(CategoryRequestDTO categoryDTO) {
         Category category = new Category(categoryDTO);
         return repository.save(category);
     }
@@ -30,7 +30,7 @@ public class CategoryService {
         }
     }
 
-    public Category edit(int id, RequestCategoryDTO categoryDTO) {
+    public Category edit(int id, CategoryRequestDTO categoryDTO) {
         Category category = getCategory(id);
         category.setName(categoryDTO.getName());
         repository.save(category);

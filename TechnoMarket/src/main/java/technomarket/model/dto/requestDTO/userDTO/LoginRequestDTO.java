@@ -13,7 +13,7 @@ import javax.validation.constraints.Null;
 @Getter
 @Setter
 @Component
-public class LoginDTO {
+public class LoginRequestDTO {
 
     @NotEmpty(message = "Email cannot be null or empty")
     private String email;

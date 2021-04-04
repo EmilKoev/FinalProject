@@ -13,13 +13,13 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-public class ResponseCategoryDTO {
+public class CategoryResponseDTO {
 
     private int id;
     private String name;
     List<SubCategory> subCategories;
 
-    public ResponseCategoryDTO(Category category){
+    public CategoryResponseDTO(Category category){
         this.id = category.getId();
         this.name = category.getName();
         this.subCategories = category.getSubCategories();

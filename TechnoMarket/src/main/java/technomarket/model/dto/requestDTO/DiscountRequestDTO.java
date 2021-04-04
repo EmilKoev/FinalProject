@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-public class DiscountDTO {
+public class DiscountRequestDTO {
 
     @NotEmpty(message = "Title cannot be null or empty")
     private String title;

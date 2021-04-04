@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import technomarket.model.dto.requestDTO.userDTO.RegisterRequestUserDTO;
+import technomarket.model.dto.requestDTO.userDTO.UserRegisterRequestDTO;
 
 import javax.persistence.*;
 import java.util.List;
@@ -46,7 +46,7 @@ public class User {
     private List<Product> dislikedProducts;
 
 
-    public User(RegisterRequestUserDTO userDTO){
+    public User(UserRegisterRequestDTO userDTO){
         this.firstName = userDTO.getFirstName();
         this.lastName = userDTO.getLastName();
         this.email = userDTO.getEmail();

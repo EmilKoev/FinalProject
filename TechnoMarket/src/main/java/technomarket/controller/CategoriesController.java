@@ -2,10 +2,9 @@ package technomarket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import technomarket.exeptions.AuthenticationException;
-import technomarket.model.dto.requestDTO.RequestCategoryDTO;
-import technomarket.model.dto.responseDTO.MessageDTO;
-import technomarket.model.dto.responseDTO.ResponseCategoryDTO;
+import technomarket.model.dto.requestDTO.CategoryRequestDTO;
+import technomarket.model.dto.responseDTO.MessageResponseDTO;
+import technomarket.model.dto.responseDTO.CategoryResponseDTO;
 import technomarket.model.pojo.Category;
 import technomarket.model.pojo.User;
 import technomarket.service.CategoryService;
@@ -22,42 +21,42 @@ public class CategoriesController extends Controller{
     private CategoryService service;
 
     @PutMapping("/categories")
-    public ResponseCategoryDTO createCategory(@Valid @RequestBody RequestCategoryDTO categoryDTO, HttpSession session){
+    public CategoryResponseDTO createCategory(@Valid @RequestBody CategoryRequestDTO categoryDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         adminProtection(user);
         Category category = service.addCategory(categoryDTO);
-        return new ResponseCategoryDTO(category);
+        return new CategoryResponseDTO(category);
     }
 
     @GetMapping("/categories/{id}")
-    public ResponseCategoryDTO getCategory(@PathVariable int id){
+    public CategoryResponseDTO getCategory(@PathVariable int id){
         Category category = service.getCategory(id);
-        return new ResponseCategoryDTO(category);
+        return new CategoryResponseDTO(category);
     }
 
     @PostMapping("/categories/{id}")
-    public ResponseCategoryDTO editCategory(@PathVariable int id,@Valid @RequestBody RequestCategoryDTO categoryDTO, HttpSession session){
+    public CategoryResponseDTO editCategory(@PathVariable int id, @Valid @RequestBody CategoryRequestDTO categoryDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         adminProtection(user);
         Category category = service.edit(id, categoryDTO);
-        return new ResponseCategoryDTO(category);
+        return new CategoryResponseDTO(category);
     }
 
     @DeleteMapping("/categories/{id}")
-    public MessageDTO deleteCategory(@PathVariable int id, HttpSession session){
+    public MessageResponseDTO deleteCategory(@PathVariable int id, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         adminProtection(user);
         service.delete(id);
-        return new MessageDTO("Delete category successful!");
+        return new MessageResponseDTO("Delete category successful!");
     }
 
 
     @GetMapping("/categories")
-    public List<ResponseCategoryDTO> getAllCategories(){
+    public List<CategoryResponseDTO> getAllCategories(){
         List<Category> categories = service.getAllCategories();
-        List<ResponseCategoryDTO> responseCategoryDTOList = new ArrayList<>();
+        List<CategoryResponseDTO> responseCategoryDTOList = new ArrayList<>();
         for (Category c : categories) {
-            responseCategoryDTOList.add(new ResponseCategoryDTO(c));
+            responseCategoryDTOList.add(new CategoryResponseDTO(c));
         }
         return responseCategoryDTOList;
     }

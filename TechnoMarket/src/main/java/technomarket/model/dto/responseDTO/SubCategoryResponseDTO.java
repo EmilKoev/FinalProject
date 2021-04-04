@@ -11,13 +11,13 @@ import technomarket.model.pojo.SubCategory;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ResponseSubCategoryDTO {
+public class SubCategoryResponseDTO {
 
     private int id;
     private String name;
     private Category category;
 
-    public ResponseSubCategoryDTO(SubCategory subCategory){
+    public SubCategoryResponseDTO(SubCategory subCategory){
         this.id = subCategory.getId();
         this.name = subCategory.getName();
         this.category = subCategory.getCategory();

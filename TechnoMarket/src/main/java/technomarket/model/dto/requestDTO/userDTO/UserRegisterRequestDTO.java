@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @Getter
 @NoArgsConstructor
 @Component
-public class RegisterRequestUserDTO {
+public class UserRegisterRequestDTO {
 
     @NotEmpty(message = "First name cannot be empty or null!")
     private String firstName;

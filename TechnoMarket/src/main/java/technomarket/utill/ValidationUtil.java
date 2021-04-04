@@ -2,9 +2,7 @@ package technomarket.utill;
 
 import org.springframework.stereotype.Component;
 import technomarket.exeptions.BadRequestException;
-import technomarket.model.dto.requestDTO.productAndAttributeDTO.EditProductDTO;
-import technomarket.model.dto.requestDTO.productAndAttributeDTO.ProductDTO;
-import technomarket.model.dto.requestDTO.userDTO.RegisterRequestUserDTO;
+import technomarket.model.dto.requestDTO.userDTO.UserRegisterRequestDTO;
 import technomarket.model.dto.requestDTO.userDTO.UserEditRequestDTO;
 
 @Component
@@ -20,7 +18,7 @@ public class ValidationUtil {
     private static final String INVALID_PHONE_NUMBER = "Invalid phone number";
     private static final String PASSWORDS_DO_NOT_MATCH = "New password and confirm password do not match";
 
-    public void checkUser(RegisterRequestUserDTO user) {
+    public void checkUser(UserRegisterRequestDTO user) {
         checkFirstName(user.getFirstName());
         checkLastName(user.getLastName());
         checkPassword(user.getPassword());

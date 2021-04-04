@@ -3,7 +3,7 @@ package technomarket.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import technomarket.exeptions.NotFoundException;
-import technomarket.model.dto.requestDTO.RequestSubCategoryDTO;
+import technomarket.model.dto.requestDTO.SubCategoryRequestDTO;
 import technomarket.model.pojo.Category;
 import technomarket.model.pojo.SubCategory;
 import technomarket.model.repository.SubCategoryRepository;
@@ -18,7 +18,7 @@ public class SubCategoryService {
     @Autowired
     private CategoryService categoryService;
 
-    public SubCategory addSubCategory(RequestSubCategoryDTO subCategoryDTO) {
+    public SubCategory addSubCategory(SubCategoryRequestDTO subCategoryDTO) {
         Category category = categoryService.getCategory(subCategoryDTO.getCategoryId());
         SubCategory subCategory = new SubCategory(subCategoryDTO, category);
         repository.save(subCategory);
@@ -34,7 +34,7 @@ public class SubCategoryService {
         }
     }
 
-    public SubCategory edit(int id, RequestSubCategoryDTO requestSubCategory) {
+    public SubCategory edit(int id, SubCategoryRequestDTO requestSubCategory) {
         SubCategory subCategory = getSubCategory(id);
         Category newCategory = categoryService.getCategory(requestSubCategory.getCategoryId());
         subCategory.setName(requestSubCategory.getName());
