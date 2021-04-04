@@ -33,16 +33,16 @@ public class CommentService {
         return comments;
     }
 
-    public CommentResponseDTO addComment(Product product, User user_id, String comment) {
+    public Comment addComment(Product product, User user_id, String comment) {
         Comment c = new Comment();
         c.setComment(comment);
         c.setOwnerId(user_id);
         c.setProductId(product);
         c.setPostDate(LocalDateTime.now());
-        return new CommentResponseDTO(commentsRepository.save(c));
+        return commentsRepository.save(c);
     }
 
-    public CommentResponseDTO edit(int comment_id, User user, String newComment) {
+    public Comment edit(int comment_id, User user, String newComment) {
         if (commentsRepository.getById(comment_id) == null){
             throw new NotFoundException("comment not found");
         }
@@ -51,7 +51,7 @@ public class CommentService {
         }
         Comment comment = commentsRepository.getById(comment_id);
         comment.setComment(newComment);
-        return new CommentResponseDTO(commentsRepository.save(comment));
+        return  commentsRepository.save(comment);
     }
 
     public void delete(int comment_id, User user) {
@@ -64,7 +64,8 @@ public class CommentService {
         commentsRepository.delete(commentsRepository.getById(comment_id));
     }
 
-    public void react(ReactRequestDTO reactDTO, User user, int comment_id) {
+
+    public Comment react(ReactRequestDTO reactDTO, User user, int comment_id) {
         if (commentsRepository.getById(comment_id) == null){
             throw new NotFoundException("comment not found");
         }
@@ -98,5 +99,6 @@ public class CommentService {
                 throw new BadRequestException("Wrong credential!");
         }
         userRepository.save(user);
+        return commentsRepository.getById(comment_id);
     }
 }

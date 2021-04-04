@@ -127,11 +127,9 @@ public class ProductService {
             for (Product p : firstFilter) {
                 int attributesFound = 0;
                 for (AttributeRequestDTO attribute : filterDTO.getAttributes()) {
-                    boolean findAttribute = false;
                     for (ProductAttribute a : p.getAttributes()) {
                         if (attribute.getName().equalsIgnoreCase(a.getName())){
                             if (attribute.getValue().equalsIgnoreCase(a.getValue())){
-                                findAttribute = true;
                                 attributesFound++;
                                 break;
                             }

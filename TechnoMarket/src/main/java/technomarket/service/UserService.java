@@ -10,8 +10,6 @@ import technomarket.model.dto.requestDTO.userDTO.LoginRequestDTO;
 import technomarket.model.dto.requestDTO.PasswordRequestDTO;
 import technomarket.model.dto.requestDTO.userDTO.UserRegisterRequestDTO;
 import technomarket.model.dto.requestDTO.userDTO.UserEditRequestDTO;
-import technomarket.model.dto.responseDTO.OrderResponseDTO;
-import technomarket.model.dto.responseDTO.UserWithoutPassResponseDTO;
 import technomarket.model.pojo.Order;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
@@ -29,7 +27,8 @@ public class UserService {
     @Autowired
     private ValidationUtil validationUtil;
 
-    public UserWithoutPassResponseDTO addUser(UserRegisterRequestDTO userDTO){
+
+    public User addUser(UserRegisterRequestDTO userDTO){
         validationUtil.checkUser(userDTO);
         if(userRepository.findByEmail(userDTO.getEmail()) != null){
             throw new BadRequestException("Email already exists");
@@ -44,11 +43,10 @@ public class UserService {
         order.setUser(user);
         order.setAddress(user.getAddress());
         orderRepository.save(order);
-
-        return new UserWithoutPassResponseDTO(user);
+        return user;
     }
 
-    public UserWithoutPassResponseDTO login(LoginRequestDTO loginDTO) {
+    public User login(LoginRequestDTO loginDTO) {
         User user = userRepository.findByEmail(loginDTO.getEmail());
         if (user == null){
             throw new AuthenticationException("Wrong credentials");
@@ -57,12 +55,13 @@ public class UserService {
             if (!encoder.matches(loginDTO.getPassword(), user.getPassword())){
                 throw  new AuthenticationException("Wrong credentials");
             }else {
-                return new UserWithoutPassResponseDTO(user);
+                return user;
             }
         }
     }
 
-    public UserWithoutPassResponseDTO edit(UserEditRequestDTO requestDto, User user) {
+
+    public User edit(UserEditRequestDTO requestDto, User user) {
         validationUtil.checkUser(requestDto);
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!encoder.matches(requestDto.getOldPassword(),user.getPassword())){
@@ -83,7 +82,7 @@ public class UserService {
             user.setPhone(requestDto.getPhone());
             user.setSubscribed(requestDto.isSubscribed());
             userRepository.save(user);
-            return new UserWithoutPassResponseDTO(user);
+            return user;
         }
     }
 
@@ -97,24 +96,24 @@ public class UserService {
         }
     }
 
-    public OrderResponseDTO addProductToCart(User user, Product product) {
+    public Order addProductToCart(User user, Product product) {
         user.getOrder().getProducts().add(product);
         user.getOrder().setPrice(user.getOrder().getPrice() + product.getPrice());
         orderRepository.save(user.getOrder());
-        return new OrderResponseDTO(orderRepository.getByUserId(user.getId()));
+        return orderRepository.getByUserId(user.getId());
     }
 
-    public OrderResponseDTO removeProductFromCart(User user, Product product) {
+    public Order removeProductFromCart(User user, Product product) {
         if (!user.getOrder().getProducts().contains(product)){
             throw new BadRequestException("No product like this in cart!");
         }
         user.getOrder().getProducts().remove(product);
         user.getOrder().setPrice(user.getOrder().getPrice() - product.getPrice());
         orderRepository.save(user.getOrder());
-        return new OrderResponseDTO(orderRepository.getByUserId(user.getId()));
+        return orderRepository.getByUserId(user.getId());
     }
 
-    public OrderResponseDTO getProductsFromCart(User user) {
-        return new OrderResponseDTO(orderRepository.getByUserId(user.getId()));
+    public Order getProductsFromCart(User user) {
+        return orderRepository.getByUserId(user.getId());
     }
 }

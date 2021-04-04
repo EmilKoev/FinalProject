@@ -7,8 +7,10 @@ import technomarket.model.dto.requestDTO.userDTO.LoginRequestDTO;
 import technomarket.model.dto.requestDTO.PasswordRequestDTO;
 import technomarket.model.dto.requestDTO.userDTO.UserRegisterRequestDTO;
 import technomarket.model.dto.requestDTO.userDTO.UserEditRequestDTO;
+import technomarket.model.dto.responseDTO.MessageResponseDTO;
 import technomarket.model.dto.responseDTO.OrderResponseDTO;
 import technomarket.model.dto.responseDTO.UserWithoutPassResponseDTO;
+import technomarket.model.pojo.Order;
 import technomarket.model.pojo.Product;
 import technomarket.model.pojo.User;
 import technomarket.service.ProductService;
@@ -30,7 +32,8 @@ public class UserController extends Controller {
         if(sessionManager.isSomeoneLoggedIn(session)){
             throw new BadRequestException("You have to log out first!");
         }
-        return userService.addUser(userDTO);
+        User user = userService.addUser(userDTO);
+        return new UserWithoutPassResponseDTO(user);
     }
 
     @GetMapping("/user")
@@ -44,50 +47,56 @@ public class UserController extends Controller {
         if (sessionManager.isSomeoneLoggedIn(session)){
             throw new BadRequestException("You are already logged in!");
         }
-        UserWithoutPassResponseDTO user = userService.login(loginDTO);
+        User user = userService.login(loginDTO);
         sessionManager.loginUser(session,user.getId());
-        return user;
+        return new UserWithoutPassResponseDTO(user);
     }
 
     @PostMapping("/user/logout")
-    public void logout(HttpSession session){
+    public MessageResponseDTO logout(HttpSession session){
         if (!sessionManager.isSomeoneLoggedIn(session)){
             throw new BadRequestException("You are already logged out!");
         }
         sessionManager.logoutUser(session);
+        return new MessageResponseDTO("You are logged out!");
     }
 
     @PutMapping("/user/edit")
     public UserWithoutPassResponseDTO edit(@Valid @RequestBody UserEditRequestDTO requestDto, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        return userService.edit(requestDto,user);
+        user = userService.edit(requestDto,user);
+        return new UserWithoutPassResponseDTO(user);
     }
 
     @DeleteMapping("/user")
-    public void delete(@Valid @RequestBody PasswordRequestDTO password , HttpSession session){
+    public MessageResponseDTO delete(@Valid @RequestBody PasswordRequestDTO password , HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         sessionManager.logoutUser(session);
         userService.delete(password ,user);
+        return new MessageResponseDTO("Delete successfully");
     }
 
     @PutMapping("/cart/{id}")
     public OrderResponseDTO addProductToCart(@PathVariable(name = "id") int id, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         Product product = productService.getById(id);
-        return userService.addProductToCart(user, product);
+        Order order = userService.addProductToCart(user, product);
+        return new OrderResponseDTO(order);
     }
 
     @DeleteMapping("/cart/{id}")
     public OrderResponseDTO removeProductFromCart(@PathVariable(name = "id") int id, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         Product product = productService.getById(id);
-        return userService.removeProductFromCart(user,product);
+        Order order = userService.removeProductFromCart(user,product);
+        return new OrderResponseDTO(order);
     }
 
     @PostMapping("/cart")
     public OrderResponseDTO getProductsFromCart(HttpSession session){
         User user = sessionManager.getLoggedUser(session);
-        return userService.getProductsFromCart(user);
+        Order order = userService.getProductsFromCart(user);
+        return new OrderResponseDTO(order);
     }
 
 }
