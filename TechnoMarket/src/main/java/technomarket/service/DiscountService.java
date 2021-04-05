@@ -29,7 +29,10 @@ public class DiscountService {
             throw  new BadRequestException("Percentage of the discount must be more than 0!");
         }
         Discount discount = new Discount(discountDTO);
-        emailService.sendMessage(discount);
+        Thread emailGenerator = new Thread(()->{
+            emailService.sendMessage(discount);
+        });
+        emailGenerator.start();
         return repository.save(discount);
     }
 
