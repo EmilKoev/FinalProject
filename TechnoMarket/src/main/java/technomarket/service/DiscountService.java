@@ -2,10 +2,12 @@ package technomarket.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import technomarket.exeptions.BadRequestException;
 import technomarket.exeptions.NotFoundException;
 import technomarket.model.dto.requestDTO.DiscountRequestDTO;
 import technomarket.model.pojo.Discount;
+import technomarket.model.pojo.Product;
 import technomarket.model.repository.DiscountRepository;
 import java.time.LocalDate;
 import java.util.List;
@@ -17,8 +19,11 @@ public class DiscountService {
     @Autowired
     private DiscountRepository repository;
     @Autowired
+    private ProductService productService;
+    @Autowired
     private EmailService emailService;
 
+    @Transactional
     public Discount addDiscount(DiscountRequestDTO discountDTO) {
         LocalDate start = discountDTO.getStartAt();
         LocalDate end = discountDTO.getEndAt();
@@ -29,6 +34,12 @@ public class DiscountService {
             throw  new BadRequestException("Percentage of the discount must be more than 0!");
         }
         Discount discount = new Discount(discountDTO);
+        repository.save(discount);
+        for (Integer productId : discountDTO.getProductsId()) {
+            Product product = productService.getById(productId);
+            product.setDiscount(discount);
+            discount.getProductList().add(product);
+        }
         emailService.sendMessage(discount);
         return repository.save(discount);
     }

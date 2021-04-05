@@ -29,7 +29,7 @@ public class ImageController extends Controller{
     ProductImageService productImageService;
 
     @GetMapping(value = "/images/{id}", produces = "image/*")
-    public byte[] getImageById(@PathVariable int id) throws IOException {//TODO rename
+    public byte[] getImageById(@PathVariable int id) throws IOException {
         ProductImage image = productImageService.getById(id);
         String url = image.getUrl();
         File file = new File(url);

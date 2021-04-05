@@ -66,18 +66,11 @@ public class ProductImageService {
     @Transactional
     public List<ProductImage> multiUpload(MultipartFile[] files, int productId) {
         Product product = productService.getById(productId);
-        List<Object> fileDownloadUrls = new ArrayList<>();
+        List<ProductImage> fileDownloadUrls = new ArrayList<>();
         Arrays.asList(files)
                 .stream()
                 .forEach(file -> fileDownloadUrls.add(upload(file,productId)));
-        List<ProductImage> productImages = new ArrayList<>();
-        for (Object o : fileDownloadUrls) {
-            ProductImage productImage = new ProductImage();
-            productImage.setUrl(o.toString());
-            productImage.setProduct(product);
-            productImages.add(productImage);
-        }
-        return productImages;
+        return productService.getById(productId).getImages();
     }
 
     public ResponseEntity download(int id) {
