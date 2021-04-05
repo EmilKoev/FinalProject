@@ -3,6 +3,7 @@ package technomarket.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import technomarket.model.dto.requestDTO.DiscountRequestDTO;
+import technomarket.model.dto.responseDTO.DiscountResponseDTO;
 import technomarket.model.dto.responseDTO.MessageResponseDTO;
 import technomarket.model.pojo.Discount;
 import technomarket.model.pojo.User;
@@ -10,6 +11,7 @@ import technomarket.service.DiscountService;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,22 +21,25 @@ public class DiscountsController extends Controller{
     private DiscountService discountService;
 
     @PutMapping("/discounts")
-    public Discount addDiscount(@Valid @RequestBody DiscountRequestDTO discountDTO, HttpSession session){
+    public DiscountResponseDTO addDiscount(@Valid @RequestBody DiscountRequestDTO discountDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         adminProtection(user);
-        return discountService.addDiscount(discountDTO);
+        Discount discount = discountService.addDiscount(discountDTO);
+        return new DiscountResponseDTO(discount);
     }
 
     @GetMapping("/discounts/{id}")
-    public Discount getDiscount(@PathVariable int id){
-        return discountService.getDiscount(id);
+    public DiscountResponseDTO getDiscount(@PathVariable int id){
+        Discount discount = discountService.getDiscount(id);
+        return new DiscountResponseDTO(discount);
     }
 
     @PostMapping("/discounts/{id}")
-    public Discount editDiscount(@PathVariable int id, @RequestBody DiscountRequestDTO discountDTO, HttpSession session){
+    public DiscountResponseDTO editDiscount(@PathVariable int id, @RequestBody DiscountRequestDTO discountDTO, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         adminProtection(user);
-        return discountService.edit(discountDTO, id);
+        Discount discount = discountService.edit(discountDTO, id);
+        return new DiscountResponseDTO(discount);
     }
 
     @DeleteMapping("/discounts/{id}")
@@ -46,8 +51,13 @@ public class DiscountsController extends Controller{
     }
 
     @GetMapping("/discounts")
-    public List<Discount> getAllDiscounts(){
-        return discountService.getAll();
+    public List<DiscountResponseDTO> getAllDiscounts(){
+        List<Discount> discountList = discountService.getAll();
+        List<DiscountResponseDTO> responseList = new ArrayList<>();
+        for (Discount discount : discountList) {
+            responseList.add(new DiscountResponseDTO(discount));
+        }
+        return responseList;
     }
 
 }
