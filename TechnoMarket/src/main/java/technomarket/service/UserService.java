@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import technomarket.exeptions.AuthenticationException;
 import technomarket.exeptions.BadRequestException;
 import technomarket.model.dto.requestDTO.userDTO.LoginRequestDTO;
@@ -17,6 +18,8 @@ import technomarket.model.repository.OrderRepository;
 import technomarket.model.repository.UserRepository;
 import technomarket.utill.ValidationUtil;
 
+import java.time.LocalDateTime;
+
 @Service
 public class UserService {
 
@@ -27,7 +30,7 @@ public class UserService {
     @Autowired
     private ValidationUtil validationUtil;
 
-
+    @Transactional
     public User addUser(UserRegisterRequestDTO userDTO){
         validationUtil.checkUser(userDTO);
         if(userRepository.findByEmail(userDTO.getEmail()) != null){
@@ -37,12 +40,11 @@ public class UserService {
         userDTO.setPassword(encoder.encode(userDTO.getPassword()));
         User user = new User(userDTO);
         Order order = new Order();
-        order = orderRepository.save(order);
-        user.setOrder(order);
+        order.setAddress(user.getAddress());
         user = userRepository.save(user);
         order.setUser(user);
-        order.setAddress(user.getAddress());
-        orderRepository.save(order);
+        order = orderRepository.save(order);
+        user.setOrder(order);
         return user;
     }
 
@@ -115,5 +117,27 @@ public class UserService {
 
     public Order getProductsFromCart(User user) {
         return orderRepository.getByUserId(user.getId());
+    }
+
+    @Transactional
+    public void finishOrder(User user) {
+        if (user.getOrder().getProducts().size() == 0){
+            throw new BadRequestException("You can not finish empty order!");
+        }
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        user.getOrder().setFinishedAt(LocalDateTime.now());
+        orderRepository.save(user.getOrder());
+        Order order = new Order();
+        order.setAddress(user.getAddress());
+        order.setUser(user);
+        order = orderRepository.save(order);
+        user.setOrder(order);
+        user = userRepository.save(user);
+        order.setUser(user);
+        orderRepository.save(order);
     }
 }

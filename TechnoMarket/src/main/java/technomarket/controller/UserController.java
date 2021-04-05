@@ -92,11 +92,19 @@ public class UserController extends Controller {
         return new OrderResponseDTO(order);
     }
 
-    @PostMapping("/cart")
+    @GetMapping("/cart")
     public OrderResponseDTO getProductsFromCart(HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         Order order = userService.getProductsFromCart(user);
         return new OrderResponseDTO(order);
     }
+
+    @PutMapping("/cart")
+    public MessageResponseDTO finishMyOrder(HttpSession session){
+        User user = sessionManager.getLoggedUser(session);
+        userService.finishOrder(user);
+        return new MessageResponseDTO("Order was Finished!");
+    }
+
 
 }

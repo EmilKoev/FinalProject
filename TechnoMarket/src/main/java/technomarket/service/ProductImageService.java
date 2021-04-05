@@ -75,7 +75,7 @@ public class ProductImageService {
             ProductImage productImage = new ProductImage();
             productImage.setUrl(o.toString());
             productImage.setProduct(product);
-            productImages.add(productImage);
+            productImages.add(repository.save(productImage));
         }
         return productImages;
     }
