@@ -20,7 +20,7 @@ public class AttributeController extends Controller{
     private AttributeService service;
 
     @PutMapping("/attributes/{productId}")
-    public ProductAttribute addAttribute(@RequestBody AttributeRequestDTO attributeDTO, @PathVariable int productId, HttpSession session){
+    public ProductAttribute addAttribute(@Valid @RequestBody AttributeRequestDTO attributeDTO, @PathVariable int productId, HttpSession session){
         User user = sessionManager.getLoggedUser(session);
         adminProtection(user);
         return service.addAttribute(attributeDTO, productId);

@@ -16,6 +16,7 @@ import technomarket.model.pojo.*;
 import technomarket.model.repository.ProductRepository;
 import technomarket.model.repository.UserRepository;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,10 +50,18 @@ public class ProductService {
     @Transactional
     public Product addProduct(ProductRequestDTO productDTO) {
         SubCategory subCategory = subCategoryService.getSubCategory(productDTO.getSubCategoryId());
-        Discount discount = discountService.getDiscount(productDTO.getDiscountId());
+        Discount discount;
+        if (productDTO.getDiscountId() != 0){
+            discount = discountService.getDiscount(productDTO.getDiscountId());
+        }else {
+            discount = discountService.getDiscount(1);
+        }
         Product product = new Product(productDTO, subCategory, discount);
         productRepository.save(product);
         for (AttributeRequestDTO attributeDTO : productDTO.getAttributeList()) {
+            if (attributeDTO.getName() == null || attributeDTO.getValue() == null){
+                throw new BadRequestException("name and value in attributes cannot be null");
+            }
             ProductAttribute attribute = attributeService.addAttribute(attributeDTO, product.getId());
             product.getAttributes().add(attribute);
         }
@@ -65,9 +74,9 @@ public class ProductService {
     }
 
     public Product edit(int id, EditProductRequestDTO editProductDTO) {
+        Product product = getById(id);
         SubCategory subCategory = subCategoryService.getSubCategory(editProductDTO.getSubCategoryId());
         Discount discount = discountService.getDiscount(editProductDTO.getDiscountId());
-        Product product = getById(id);
         product.setName(editProductDTO.getName());
         product.setBrand(editProductDTO.getBrand());
         product.setSubCategory(subCategory);

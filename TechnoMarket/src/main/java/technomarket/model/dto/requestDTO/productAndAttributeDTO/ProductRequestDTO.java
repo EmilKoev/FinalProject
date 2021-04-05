@@ -18,10 +18,10 @@ import java.util.List;
 public class ProductRequestDTO {
 
     @NotNull(message = "Name cannot be null")
-    @Size(min = 3, max = 10, message = "Name length cannot be more then 10 and less then 3 characters")
+    @Size(min = 3, max = 40, message = "Name length cannot be more then 40 and less then 3 characters")
     private String name;
     @NotNull(message = "Brand cannot be null")
-    @Size(min = 3, max = 10, message = "Brand length cannot be more then 10 and less then 3 characters")
+    @Size(min = 3, max = 20, message = "Brand length cannot be more then 20 and less then 3 characters")
     private String brand;
     @JsonProperty("sub_category_id")
     @NotNull(message = "sub_category_id cannot be null")

@@ -77,8 +77,9 @@ public class Product {
     }
 
     public double getPrice() {
-        if (discount.getStartAt().isBefore(LocalDate.now()) && discount.getEndAt().isBefore(LocalDate.now())){
-            return price - (price * (discount.getDiscountPercent()/100));
+        if (discount.getStartAt().isBefore(LocalDate.now()) && discount.getEndAt().isAfter(LocalDate.now())){
+            double a = price - (price * (discount.getDiscountPercent()/100.0));
+            return a;
         }
         return price;
     }

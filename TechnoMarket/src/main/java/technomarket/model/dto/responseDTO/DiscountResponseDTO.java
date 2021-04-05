@@ -13,6 +13,7 @@ import technomarket.model.pojo.Product;
 
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -27,7 +28,7 @@ public class DiscountResponseDTO {
     private int discountPercent;
     private LocalDate startAt;
     private LocalDate endAt;
-    private List<Product> productList;
+    private List<ProductResponseDTO> productList;
 
     public DiscountResponseDTO(Discount discount){
         this.id = discount.getId();
@@ -35,6 +36,9 @@ public class DiscountResponseDTO {
         this.discountPercent = discount.getDiscountPercent();
         this.startAt = discount.getStartAt();
         this.endAt = discount.getEndAt();
-        this.productList = discount.getProductList();
+        productList = new ArrayList<>();
+        for (Product p : discount.getProductList()) {
+            this.productList.add(new ProductResponseDTO(p));
+        }
     }
 }

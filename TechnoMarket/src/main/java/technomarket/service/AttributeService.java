@@ -24,7 +24,7 @@ public class AttributeService {
     @Autowired
     protected ProductService productService;
 
-    public ProductAttribute addAttribute(@Valid AttributeRequestDTO attributeDTO, int productId) {
+    public ProductAttribute addAttribute(AttributeRequestDTO attributeDTO, int productId) {
         try {
             getAttribute(attributeDTO.getName(), productId);
         }catch (NotFoundException exception){

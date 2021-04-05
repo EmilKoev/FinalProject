@@ -7,6 +7,7 @@ import lombok.Setter;
 import technomarket.model.dto.requestDTO.productAndAttributeDTO.AttributeRequestDTO;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 @NoArgsConstructor
@@ -18,7 +19,9 @@ import java.io.Serializable;
 public class ProductAttribute implements Serializable {
 
     @Id
+    @NotEmpty(message = "Name cannot be null ot empty!")
     private String name;
+    @NotEmpty(message = "Value cannot be null ot empty!")
     private String value;
     @Id
     @ManyToOne
@@ -31,6 +34,4 @@ public class ProductAttribute implements Serializable {
         this.value = attributeDTO.getValue();
         this.productId = product;
     }
-
-
 }

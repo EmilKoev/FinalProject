@@ -36,7 +36,7 @@ public class ImageController extends Controller{
         return Files.readAllBytes(file.toPath());
     }
 
-    @GetMapping(value = "/download/{id}", produces = "image/*")
+    @GetMapping(value = "/download/{id}", produces="image/*")
     public ResponseEntity download(@PathVariable int id) {
         return productImageService.download(id);
     }

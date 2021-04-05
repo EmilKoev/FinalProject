@@ -99,24 +99,26 @@ public class UserService {
     }
 
     public Order addProductToCart(User user, Product product) {
-        user.getOrder().getProducts().add(product);
-        user.getOrder().setPrice(user.getOrder().getPrice() + product.getPrice());
-        orderRepository.save(user.getOrder());
-        return orderRepository.getByUserId(user.getId());
+        Order order = user.getOrder();
+        order.getProducts().add(product);
+        order.setPrice(user.getOrder().getPrice() + product.getPrice());
+        orderRepository.save(order);
+        return order;
     }
 
     public Order removeProductFromCart(User user, Product product) {
-        if (!user.getOrder().getProducts().contains(product)){
+        Order order = user.getOrder();
+        if (!order.getProducts().contains(product)){
             throw new BadRequestException("No product like this in cart!");
         }
-        user.getOrder().getProducts().remove(product);
-        user.getOrder().setPrice(user.getOrder().getPrice() - product.getPrice());
-        orderRepository.save(user.getOrder());
-        return orderRepository.getByUserId(user.getId());
+        order.getProducts().remove(product);
+        order.setPrice(user.getOrder().getPrice() - product.getPrice());
+        orderRepository.save(order);
+        return order;
     }
 
     public Order getProductsFromCart(User user) {
-        return orderRepository.getByUserId(user.getId());
+        return user.getOrder();
     }
 
     @Transactional

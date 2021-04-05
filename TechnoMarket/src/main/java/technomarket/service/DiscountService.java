@@ -9,6 +9,8 @@ import technomarket.model.dto.requestDTO.DiscountRequestDTO;
 import technomarket.model.pojo.Discount;
 import technomarket.model.pojo.Product;
 import technomarket.model.repository.DiscountRepository;
+import technomarket.model.repository.ProductRepository;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +24,8 @@ public class DiscountService {
     private ProductService productService;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private ProductRepository productRepository;
 
     @Transactional
     public Discount addDiscount(DiscountRequestDTO discountDTO) {
@@ -74,8 +78,13 @@ public class DiscountService {
         return  discount;
     }
 
+    @Transactional
     public void deleteDiscount(int id){
         Discount discount = getDiscount(id);
+        for (Product p : discount.getProductList()) {
+            p.setDiscount(repository.getById(1));
+            productRepository.save(p);
+        }
         repository.delete(discount);
     }
 

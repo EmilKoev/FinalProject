@@ -7,4 +7,5 @@ import technomarket.model.pojo.Discount;
 @Repository
 public interface DiscountRepository extends JpaRepository<Discount, Integer> {
 
+    Discount getById(Integer id);
 }
