@@ -26,9 +26,7 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JsonManagedReference
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @OneToOne
     private Order order;
     private String address;
     private String phone;
@@ -44,6 +42,9 @@ public class User {
     private List<Product> likedProducts;
     @ManyToMany(mappedBy = "dislikers")
     private List<Product> dislikedProducts;
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Order> orders;
 
 
     public User(UserRegisterRequestDTO userDTO){

@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Setter
@@ -17,12 +18,12 @@ import java.util.List;
 @Table(name = "orders")
 public class Order {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @OneToOne(mappedBy = "order")
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
     @JsonBackReference
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
     private String address;
     private double price;
@@ -34,4 +35,5 @@ public class Order {
             inverseJoinColumns = { @JoinColumn(name = "product_id") }
     )
     List<Product> products;
+    private LocalDateTime finishedAt;
 }
