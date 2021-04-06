@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
+import technomarket.utill.ValidationUtil;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -17,9 +19,9 @@ import javax.validation.constraints.Size;
 @Component
 public class AttributeRequestDTO {
 
-    @NotEmpty(message = "Name cannot be null ot empty!")
+    @NotBlank(message = "Name" + ValidationUtil.NOR_NULL_OR_EMPTY)
     private String name;
-    @NotEmpty(message = "Value cannot be null ot empty!")
+    @NotBlank(message = "Value" + ValidationUtil.NOR_NULL_OR_EMPTY)
     private String value;
 
 }

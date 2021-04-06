@@ -4,8 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
+import technomarket.utill.ValidationUtil;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 @Setter
 @Getter
@@ -13,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class CommentRequestDTO {
 
-    @NotEmpty(message = "Comment cannot be null ot empty")
+    @NotBlank(message = "Comment" + ValidationUtil.NOR_NULL_OR_EMPTY)
     private String comment;
 
 }

@@ -65,7 +65,6 @@ public class ProductImageService {
 
     @Transactional
     public List<ProductImage> multiUpload(MultipartFile[] files, int productId) {
-        Product product = productService.getById(productId);
         List<ProductImage> fileDownloadUrls = new ArrayList<>();
         Arrays.asList(files)
                 .stream()
