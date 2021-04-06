@@ -4,8 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
+import technomarket.utill.ValidationUtil;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -15,21 +17,21 @@ import javax.validation.constraints.Size;
 @Component
 public class UserEditRequestDTO {
 
-    @NotEmpty(message = "First name cannot be empty or null!")
+    @NotBlank(message = "First name" + ValidationUtil.NOR_NULL_OR_EMPTY)
     private String firstName;
-    @NotEmpty(message = "Last name cannot be empty or null!")
+    @NotBlank(message = "Last name" + ValidationUtil.NOR_NULL_OR_EMPTY)
     private String lastName;
     @Email
-    @NotEmpty(message = "Email cannot be empty or null!")
+    @NotBlank(message = "Email" + ValidationUtil.NOR_NULL_OR_EMPTY)
     private String email;
-    @NotEmpty(message = "Old Password cannot be empty or null!")
+    @NotBlank(message = "Old Password" + ValidationUtil.NOR_NULL_OR_EMPTY)
     private String oldPassword;
-    @NotEmpty(message = "New Password cannot be empty or null!")
+    @NotBlank(message = "New Password" + ValidationUtil.NOR_NULL_OR_EMPTY)
     private String newPassword;
-    @NotEmpty(message = "Confirm Password cannot be empty or null!")
+    @NotBlank(message = "Confirm Password" + ValidationUtil.NOR_NULL_OR_EMPTY)
     private String confirmNewPassword;
-    @NotEmpty(message = "Address cannot be empty or null!")
-    @Size(min = 6, message = "Address must be at least 6 symbols")
+    @NotBlank(message = "Address" + ValidationUtil.NOR_NULL_OR_EMPTY)
+    @Size(min = 6, message = ValidationUtil.LENGTH_LIMITS_FOR_ADDRESS)
     private String address;
     private String phone;
     private boolean isSubscribed;

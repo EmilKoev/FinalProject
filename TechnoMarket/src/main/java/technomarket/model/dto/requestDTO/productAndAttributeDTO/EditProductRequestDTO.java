@@ -5,8 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
+import technomarket.utill.ValidationUtil;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -16,21 +18,23 @@ import javax.validation.constraints.Size;
 @Setter
 public class EditProductRequestDTO {
 
-    @NotNull(message = "Name cannot be null")
-    @Size(min = 3, max = 40, message = "Name length cannot be more then 40 and less then 3 characters")
+    @NotBlank(message = "Name" + ValidationUtil.NOR_NULL_OR_EMPTY)
+    @Size(min = ValidationUtil.MIN_NAME_LENGTH, max = ValidationUtil.MAX_NAME_LENGTH,
+            message = ValidationUtil.LENGTH_LIMITS_FOR_NAME)
     private String name;
-    @NotNull(message = "Brand cannot be null")
-    @Size(min = 3, max = 20, message = "Brand length cannot be more then 20 and less then 3 characters")
+    @NotNull(message = "Brand" + ValidationUtil.NOR_NULL_OR_EMPTY)
+    @Size(min = ValidationUtil.MIN_BRAND_LENGTH, max = ValidationUtil.MAX_BRAND_LENGTH,
+            message = ValidationUtil.LENGTH_LIMITS_FOR_BAND)
     private String brand;
     @JsonProperty("sub_category_id")
-    @NotNull(message = "sub_category_id cannot be null")
+    @NotNull(message = "sub_category_id" + ValidationUtil.NOT_NULL)
     private int subCategoryId;
-    @NotNull(message = "Price cannot be null")
-    @Min(value = 0, message = "The price must be a positive number")
+    @NotNull(message = "Price" + ValidationUtil.NOT_NULL)
+    @Min(value = 0, message = "The price" + ValidationUtil.POSITIVE_NUMBER)
     private double price;
     private String info;
     @JsonProperty("discount_id")
-    @NotNull(message = "discount_id cannot be null!")
+    @NotNull(message = "discount_id" + ValidationUtil.NOT_NULL)
     private int discountId;
 
 }

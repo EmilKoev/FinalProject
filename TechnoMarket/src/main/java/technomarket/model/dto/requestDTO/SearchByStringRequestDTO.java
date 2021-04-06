@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
+import technomarket.utill.ValidationUtil;
 
 import javax.validation.constraints.NotNull;
 
@@ -13,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Component
 public class SearchByStringRequestDTO {
 
-    @NotNull(message = "Search cannot be null")
+    @NotNull(message = "Search" + ValidationUtil.NOT_NULL)
     private String search;
 
 }

@@ -7,8 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
+import technomarket.utill.ValidationUtil;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -19,10 +21,10 @@ import java.util.HashSet;
 @NoArgsConstructor
 public class DiscountRequestDTO {
 
-    @NotEmpty(message = "Title cannot be null or empty")
+    @NotBlank(message = "Title" + ValidationUtil.NOR_NULL_OR_EMPTY)
     private String title;
     @JsonProperty("discount_percent")
-    @Min(value = 0, message = "Discount Percent must be a positive number")
+    @Min(value = 0, message = "Discount Percent" + ValidationUtil.POSITIVE_NUMBER)
     private int discountPercent;
     @JsonProperty("start_at")
     @JsonFormat(pattern="yyyy-MM-dd")
